@@ -1,0 +1,484 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    scroll-behavior: smooth;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+:root{
+    --musta-color: #000000;
+    --valkoinen: #ffffff;
+    --punainen: red;
+}
+
+header{
+    position: fixed;
+    width: 100%;
+    top:0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 2%;
+    background-color: var(--musta-color);
+    box-shadow: 0 2px 5px -2px #156d2b1a;
+    transition: all .6s ease ;
+
+
+}
+.logo img{
+    max-width: 180px;
+    width: auto;
+    height: 100%;
+    object-fit:  contain;
+    display: block;
+    margin-right: 20px;
+   
+}
+
+.navbar{
+    display: flex;
+}
+
+.navbar a{
+    display: inline-block;
+    font-size:large;
+    color: var(--valkoinen) ;
+    margin: 0 17px;
+    padding: 2px 0;
+    border-bottom: 2px solid transparent;
+    transition: all .6s ease ;
+
+
+}
+.navbar a:hover{
+    color: var(--punainen);
+    border-bottom: 2px solid var(--punainen) ;
+
+}
+
+.nav-content{
+    display: flex;
+    align-items: center;
+   
+}
+
+.nav-content a{
+    display: inline-block;
+    font-size: 23px;
+    color: var(--valkoinen);
+    margin: 0 10px;
+    transition: all .6s ease ;
+
+}
+.nav-content a:hover{
+    transform: scale(1.1);
+    color: var(--punainen);
+}
+ 
+
+
+/* ===== HERO ===== */
+.hero {
+    background-color: var(--valkoinen);
+    width: 100%;
+    padding-top: 200px; 
+    margin-top: 20px;
+}
+
+.hero-box {
+    position: relative;
+    margin: 0 auto;
+    width: min(95%, 1200px);
+    height: clamp(400px, 75vh, 800px);
+    border-radius: 20px;
+    background: var(--musta-color);
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+}
+
+.hero-box.reverse {
+    grid-template-columns: 1fr 1fr;
+    direction: rtl;
+}
+
+
+.hero-box {
+    background-image: url('kuvat/tausta.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-image {
+    background-image: url('kuvat/hero-kuva.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100%;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+}
+
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: var(--valkoinen);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+}
+
+.hero-content.align-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.hero-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 56px);
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-title span {
+    color: var(--punainen);
+}
+
+.hero-subtitle {
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1.7;
+    color: #f2f2f2;
+    opacity: 0.95;
+    max-width: 550px;
+    margin-bottom: 30px;
+}
+
+.hero-btn {
+    background-color: var(--punainen);
+    color: var(--valkoinen);
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+
+
+/*MENU OSUUS*/
+.menu {
+  background-color: var(--valkoinen);
+  padding: 100px 5% 120px;
+  text-align: center;    /* otsikot keskelle */
+}
+
+
+/* Otsikon  */
+.menu{
+    background-color: var(--valkoinen);
+    padding: 100px 5% 120px;
+}
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+  color: var(--musta-color);
+  text-align: center;
+  text-transform: uppercase; /* isot kirjaimet */
+  letter-spacing: 1px;
+}
+
+/* Otsikon ( Pizza Menu)punaiseksi */
+.section-title span {
+  color: var(--punainen);
+}
+
+
+/* ===== GRID-RAKENNE ===== */
+.menu-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    justify-items: center; 
+    align-items: stretch; /* venytetään pystysuunnassa */
+}
+
+
+/* ===== PIZZA-KORTIT ===== */
+
+.pizza-card{
+    background-color: var(--musta-color);
+    color: var(--valkoinen);
+    border-radius: 20px;
+    overflow: hidden; /* piilotetaan ylimenevä sisältö */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; 
+    max-width: 360px; 
+    display: flex; 
+    flex-direction: column; 
+
+}
+.pizza-card:hover {
+  transform: translateY(-6px); 
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35); 
+}
+
+.pizza-img {
+  width: 100%; 
+  height: 240px; 
+  object-fit: cover; 
+  transition: transform 0.5s ease; 
+
+}
+.pizza-card:hover .pizza-img {
+  transform: scale(1.05);  /* pieni zoom-efekti hoverissa */
+}
+
+.pizza-info {
+  padding: 25px; 
+  text-align: left; 
+}
+.pizza-name {
+  font-family: 'Poppins', sans-serif; 
+  font-size: 1.3rem; 
+  color: var(--punainen); 
+  margin-bottom: 10px; 
+}
+
+.pizza-desc {
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  color: #f2f2f2; /* vaalea harmaa teksti */
+  opacity: 0.9; /* hieman läpinäkyvä */
+  margin-bottom: 20px; /* väli hinnan yläpuolella */
+}
+.pizza-price {
+  display: inline-block; /* tekee hinnasta pienen laatikon */
+  background-color: var(--punainen); 
+  color: var(--valkoinen); 
+  font-weight: 700; /* lihavoitu */
+  padding: 7px 15px; /* sisämarginaalit */
+  border-radius: 25px; 
+  font-size: 0.95rem; /* fonttikoko */
+  transition: background-color 0.3s ease; /* animaatio hoverille */
+}
+
+.pizza-price:hover {
+  background-color: #b30000; 
+}
+
+
+/* ===== FOOTER ===== */
+.footer{
+    background-color: var(--musta-color);
+    color: var(--valkoinen);
+    padding: 80px 6% 30px;
+    margin-top: 100px;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 60px;
+    align-items: start;
+}
+
+/*vasen puoli*/
+.footer-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+.footer-title span {
+  color: var(--punainen);
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+.footer-hours {
+  margin-top: 25px;
+}
+.footer-hours h4 {
+  font-size: 1.1rem;
+  color: var(--punainen);
+  margin-bottom: 10px;
+  
+}
+
+/*oikea puoli*/
+.footer-form h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+ 
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  background-color: #111; /* tumma tausta inputeille */
+  border: 1px solid #333;
+  color: var(--valkoinen);
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  border-color: var(--punainen);
+  background-color: #1a1a1a;
+  outline: none;
+}
+
+.send-btn {
+  background-color: var(--punainen);
+  color: var(--valkoinen);
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.send-btn:hover {
+  background-color: #b30000;
+  transform: scale(1.05);
+}
+
+/* ===== Footer bottom ===== */
+.footer-bottom {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .send-btn {
+    align-self: center;
+  }
+}
+
+
+
+@media (max-width: 992px) {
+
+  header {
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    padding: 10px 4%;
+  }
+
+  .logo img {
+    max-width: 140px; 
+  }
+
+  /* Navigaatiolista piilotetaan oletuksena */
+  .navbar {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: var(--musta-color);
+    flex-direction: column;
+    align-items: center;
+    display: none; 
+    padding: 15px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Linkit listassa */
+  .navbar li {
+    margin: 12px 0;
+  }
+
+  .navbar a {
+    font-size: 1.1rem;
+  }
+
+
+  .nav-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+ 
+  .fa-bars {
+    display: block;
+    font-size: 26px;
+    cursor: pointer;
+  }
+}
+
+/* Alle 768px (puhelimet) */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar {
+    position: static; /* normaali virtaus */
+    width: 100%;
+    display: none; /* pysyy piilossa kunnes klikataan menu-painiketta */
+  }
+
+  .nav-content {
+    margin-top: 8px;
+  }
+}
+
+/* Aktiivinen luokka joka näyttää menun (kun klikataan bars-ikonia) */
+.navbar.active {
+  display: flex !important;
+}
