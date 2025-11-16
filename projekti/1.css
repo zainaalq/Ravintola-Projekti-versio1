@@ -277,20 +277,221 @@ header{
   opacity: 0.9; /* hieman läpinäkyvä */
   margin-bottom: 20px; /* väli hinnan yläpuolella */
 }
-.pizza-price {
-  display: inline-block; /* tekee hinnasta pienen laatikon */
-  background-color: var(--punainen); 
-  color: var(--valkoinen); 
-  font-weight: 700; /* lihavoitu */
-  padding: 7px 15px; /* sisämarginaalit */
-  border-radius: 25px; 
-  font-size: 0.95rem; /* fonttikoko */
-  transition: background-color 0.3s ease; /* animaatio hoverille */
+/* Hinta + nappi samalle riville */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
 }
 
-.pizza-price:hover {
-  background-color: #b30000; 
+/* Hinta */
+.pizza-price {
+  background-color: var(--punainen);
+  color: var(--valkoinen);
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: inline-block;
 }
+.pizza-price:hover {
+  background-color: #b30000;
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+
+/* + nappi — pieni tyylikäs ympyrä */
+.add-btn {
+  background-color: var(--valkoinen);
+  color: var(--musta-color);
+  border: none;
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.add-btn:hover {
+  background-color: var(--punainen);
+  color: var(--valkoinen);
+  transform: scale(1.08);
+}
+
+.add-btn i {
+  font-size: 1rem;
+}
+
+
+
+/* ============= OSTOSKORI  SISÄLLÄ=================*/
+
+.cart-btn{
+  position: relative;
+  display: inline-block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+
+  background: var(--punainen);
+  color: var(--valkoinen);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 50px;
+  display: none; /* Näkyy vasta, kun tuotteita lisätään */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 6px rgba(255, 0, 0, 0.4); /* kevyt hehku */
+  transition: transform 0.2s ease;
+}
+
+/* Animaatio kun arvo päivittyy */
+#cart-total.bump {
+  transform: scale(4.10);
+  transition: transform 0.2s ease;
+}
+
+.cart-count.bump {
+  transform: scale(1.25);
+}
+/* ===== Ostoskori paneeli ===== */
+.cart-panel{
+  position: fixed;
+  top:0;
+  right: -380px;  /* piilossa */
+  width: 350px;
+  height: 100vh;
+  background: #e3d4d4;
+  padding: 20px;
+  border-left: 3px solid var(--punainen);
+  transition: right 0.3s ease;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-panel.open {
+  right: 0; /* näkyy */
+}
+.cart-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-cart{
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.cart-list {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+  margin-top: 15px;
+  overflow-y: auto;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f7f4f4;
+}
+
+.cart-item button {
+  background: var(--punainen);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--punainen);
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.cart-img {
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;         /* Estää tekstin levittymisen koko riville */
+}
+
+.cart-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.cart-price {
+  font-size: 0.9rem;
+  color: #444;
+  margin-top: 2px;
+}
+
+/* +- napit pieniksi siisteiksi pareiksi */
+.quantity-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.clear-cart-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 2px solid var(--punainen);
+  color: var(--punainen);
+  font-weight: 600;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.clear-cart-btn:hover {
+  background: var(--punainen);
+  color: white;
+}
+
 
 
 /* ===== FOOTER ===== */

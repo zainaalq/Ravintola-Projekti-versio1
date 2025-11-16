@@ -18,7 +18,9 @@
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;700&display=swap"
     rel="stylesheet"
   />
+  <script src="ostoskori.js" defer></script>
 </head>
+
 
 <body>
   <!-- ===== Header ===== -->
@@ -40,7 +42,10 @@
       <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
       <a href="#"><i class="fa-regular fa-user"></i></a>
       <a href="#"><i class="fa-solid fa-heart"></i></a>
-      <a href="#"><i class="fa-solid fa-bag-shopping"></i></a>
+      <a href="#" id="cart-btn" class="cart-btn">
+         <i class="fa-solid fa-bag-shopping"></i>
+         <span id="cart-count" class="cart-count"></span>
+      </a>
       <a href="#"><i class="fa-solid fa-bars"></i></a>
     </div>
   </header>
@@ -79,7 +84,12 @@
             Tomato sauce, mozzarella cheese, olive oil, fresh basil leaves,
             light seasoning of salt and oregano.
           </p>
+
+          <div class="price-row">
           <p class="pizza-price">€10.90</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -92,7 +102,11 @@
             Tomato sauce, mozzarella cheese, pepperoni slices, olive oil, and a
             touch of oregano.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€12.50</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -105,7 +119,11 @@
             Tomato sauce, mozzarella cheese, pineapple chunks, ham slices, and a
             touch of black pepper.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€11.80</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -118,7 +136,11 @@
             Tomato sauce, mozzarella cheese, black olives, corn, mushrooms,
             cherry tomatoes, and green peppers.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€11.40</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -131,7 +153,11 @@
             Pesto sauce, grilled chicken, fresh spinach, green bell peppers,
             mozzarella, and Parmesan cheese.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€13.50</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+        </div>
         </div>
       </div>
 
@@ -144,7 +170,11 @@
             Barbecue sauce, grilled chicken, mozzarella cheese, red onions, and
             fresh cilantro.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€12.80</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -157,7 +187,12 @@
             Tomato sauce, mozzarella cheese, crispy French fries, red peppers,
             corn, mushrooms, green peppers, and cherry tomatoes.
           </p>
+
+          <div class="price-row">
           <p class="pizza-price">€11.90</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
 
@@ -170,7 +205,11 @@
             Pesto sauce, grilled chicken, fresh spinach, mozzarella, and
             Parmesan — made with gluten-free thin crust.
           </p>
+          <div class="price-row">
           <p class="pizza-price">€13.90</p>
+          <button class="add-btn">
+          <i class="fa-solid fa-plus"></i></button>
+          </div>
         </div>
       </div>
     </div>
@@ -220,6 +259,26 @@
   </div>
 </footer>
 
+
+
+<!--  OSTOSKORI PANEELI -->
+<div id="cart-panel" class="cart-panel">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button id="close-cart" class="close-cart">✕</button>
+  </div>
+
+  <ul id="cart-items" class="cart-list"></ul>
+
+  <div class="cart-footer">
+    <p>Total: €<span id="cart-total">0.00</span></p>
+    <button id="clear-cart" class="clear-cart-btn">
+      <i class="fa-solid fa-trash"></i> Clear Cart
+    </button>
+
+    <button class="checkout-btn">Checkout</button>
+  </div>
+</div>
 
 
 </body>
