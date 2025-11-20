@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – Pizza House</title>
+  <link rel="stylesheet" href="1.css">
+  <style>
+    /* Hallintasivun oma tyylimääritys */
+    .admin-container {
+      display: flex;
+      height: 100vh;
+      background: #f4f4f4;
+      margin-top: 80px;
+    }
+
+    /* VASEN SIVUPANEELI */
+    .admin-sidebar {
+      width: 240px;
+      background: #111;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      top: 80px;
+      bottom: 0;
+      left: 0;
+    }
+
+    .admin-sidebar h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #ff4747;
+    }
+
+    .admin-sidebar button {
+      background: none;
+      color: white;
+      padding: 12px;
+      border: 1px solid #444;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .admin-sidebar button:hover {
+      background: #ff4747;
+      border-color: #ff4747;
+    }
+
+    /* OIKEA SISÄLTÖALUE */
+    .admin-content {
+      margin-left: 260px;
+      padding: 30px;
+      width: calc(100% - 260px);
+    }
+
+    .panel-section {
+      display: none;
+    }
+    .panel-section.active {
+      display: block;
+    }
+
+    /* Taulukko ruokalistalle */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: #222;
+      color: white;
+      text-align: left;
+    }
+
+    .add-form {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .add-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .add-form button {
+      background: #ff4747;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<header>
+  <a href="1.html" class="logo">
+    <img src="assets/kuvat/pizza-logo.png" alt="Logo">
+  </a>
+</header>
+
+<!-- ADMIN LAYOUT -->
+<div class="admin-container">
+
+  <!-- VASEN VALIKKO -->
+  <div class="admin-sidebar">
+    <h2>Admin Panel</h2>
+
+    <button data-target="menu-panel">🍕 Ruokalista</button>
+    <button data-target="toppings-panel">🥦 Täytteet</button>
+    <button data-target="orders-panel">📦 Tilaukset</button>
+  </div>
+
+  <!-- OIKEA SISÄLTÖ -->
+  <div class="admin-content">
+
+    <!-- RUOKALISTA PANEL -->
+    <div id="menu-panel" class="panel-section active">
+      <h2>Ruokalistan hallinta</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nimi</th>
+            <th>Hinta</th>
+            <th>Erityisruokavalio</th>
+            <th>Muokkaa</th>
+          </tr>
+        </thead>
+        <tbody id="menu-table-body">
+          <!-- JS lisää rivit -->
+        </tbody>
+      </table>
+
+      <div class="add-form">
+        <h3>Lisää uusi tuote</h3>
+        <input type="text" id="new-name" placeholder="Nimi">
+        <input type="number" id="new-price" placeholder="Hinta €">
+        <input type="text" id="new-diet" placeholder="Erityisruokavalio (vegan, gluten-free...)">
+        <button id="add-item">Lisää</button>
+      </div>
+    </div>
+
+    <!-- TÄYTTEET PANEL -->
+    <div id="toppings-panel" class="panel-section">
+      <h2>Täytteiden hallinta</h2>
+      <p>Tänne tulee täytteiden CRUD myöhemmin.</p>
+    </div>
+
+    <!-- TILAUKSET PANEL -->
+    <div id="orders-panel" class="panel-section">
+      <h2>Tilaukset</h2>
+      <p>Tänne tulee tilausten hallinta myöhemmin.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // Vaihtaa panelia sivupainikkeesta
+  const buttons = document.querySelectorAll(".admin-sidebar button");
+  const sections = document.querySelectorAll(".panel-section");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.target;
+
+      sections.forEach(sec => {
+        sec.classList.remove("active");
+        if (sec.id === target) sec.classList.add("active");
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

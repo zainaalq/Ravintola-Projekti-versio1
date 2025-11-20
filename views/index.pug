@@ -1,0 +1,13 @@
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    script(type='module' src='app.js' defer) 
+    title= title
+  body
+    h1= title
+    main
+      p= text
+      ul
+        each item in items
+          li= item.name
