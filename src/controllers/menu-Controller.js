@@ -1,0 +1,115 @@
+import {
+  listAllPizzas,
+  findPizzaById,
+  findPizzaWithToppings,
+  addPizza,
+  updatePizza,
+  deletePizza,
+} from "../models/MenuItem.models.js";
+
+// ✅ GET ALL
+const getAllPizzas = async (req, res) => {
+  const pizzas = await listAllPizzas();
+
+  if (pizzas.error) {
+    return res.status(500).json({ error: pizzas.error });
+  }
+
+  res.json(pizzas);
+};
+
+// ✅ GET ONE PIZZA + TOPPINGS
+const getPizzaDetails = async (req, res) => {
+  const id = req.params.id;
+
+  const pizza = await findPizzaWithToppings(id);
+
+  if (!pizza || pizza.length === 0) {
+    return res.status(404).json({ error: "Pizza not found" });
+  }
+
+  const formatted = {
+    id: pizza[0].id,
+    name: pizza[0].name,
+    description: pizza[0].description,
+    base_price: pizza[0].base_price,
+    image: pizza[0].image,
+    toppings: pizza.map((row) => ({
+      id: row.topping_id,
+      name: row.topping_name,
+      price: row.topping_price,
+      category: row.category,
+      is_default: row.is_default,
+    })),
+  };
+
+  res.json(formatted);
+};
+
+// ✅ CREATE
+const createPizza = async (req, res) => {
+  const { name, description, base_price, image } = req.body;
+
+  if (!name || !base_price) {
+    return res.status(400).json({ error: "Name and base_price are required" });
+  }
+
+  const result = await addPizza({ name, description, base_price, image });
+
+  if (result.error) {
+    return res.status(500).json({ error: result.error });
+  }
+
+  res.status(201).json({
+    message: "Pizza created successfully",
+    id: result.id,
+  });
+};
+
+// ✅ UPDATE
+const editPizza = async (req, res) => {
+  const id = req.params.id;
+  const { name, description, base_price, image } = req.body;
+
+  const result = await updatePizza(id, {
+    name,
+    description,
+    base_price,
+    image,
+  });
+
+  if (result.error) {
+    return res.status(500).json({ error: result.error });
+  }
+
+  if (result.affectedRows === 0) {
+    return res.status(404).json({ error: "Pizza not found" });
+  }
+
+  res.json({ message: "Pizza updated successfully" });
+};
+
+// ✅ DELETE
+const removePizza = async (req, res) => {
+  const id = req.params.id;
+
+  const result = await deletePizza(id);
+
+  if (result.error) {
+    return res.status(500).json({ error: result.error });
+  }
+
+  if (result.affectedRows === 0) {
+    return res.status(404).json({ error: "Pizza not found" });
+  }
+
+  res.json({ message: "Pizza deleted successfully" });
+};
+
+export {
+  getAllPizzas,
+  getPizzaDetails,
+  createPizza,
+  editPizza,
+  removePizza,
+};

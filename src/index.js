@@ -1,27 +1,13 @@
-import express from 'express';
-
-const hostname = '127.0.0.1';
-const port = 3000;
+import express from "express";
+import menuRoutes from "./routers/menu-Routes.js";
 
 const app = express();
 
-// Needed to read JSON bodies in POST/PUT
 app.use(express.json());
 
-// Set Pug as template engine
-app.set('view engine', 'pug');
-app.set('views', './src/views');
+// Kytketään pizzareitit:
+app.use("/api/menu", menuRoutes);
 
-// Root page using Pug
-app.get('/', (req, res) => {
-  const values = {
-    title: 'My REST API',
-    message: 'Welcome to my Express + Pug API!'
-  };
-  res.render('index', values);
-});
-
-// Start server
-app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
 });
