@@ -6,7 +6,7 @@
   <title>Admin Panel – Pizza House</title>
   <link rel="stylesheet" href="1.css">
   <style>
-    /* Hallintasivun oma tyylimääritys */
+   
     .admin-container {
       display: flex;
       height: 100vh;
@@ -14,7 +14,7 @@
       margin-top: 80px;
     }
 
-    /* VASEN SIVUPANEELI */
+    
     .admin-sidebar {
       width: 240px;
       background: #111;
@@ -50,7 +50,7 @@
       border-color: #ff4747;
     }
 
-    /* OIKEA SISÄLTÖALUE */
+ 
     .admin-content {
       margin-left: 260px;
       padding: 30px;
@@ -64,7 +64,7 @@
       display: block;
     }
 
-    /* Taulukko ruokalistalle */
+    
     table {
       width: 100%;
       border-collapse: collapse;
@@ -117,10 +117,8 @@
   </a>
 </header>
 
-<!-- ADMIN LAYOUT -->
 <div class="admin-container">
 
-  <!-- VASEN VALIKKO -->
   <div class="admin-sidebar">
     <h2>Admin Panel</h2>
 
@@ -129,10 +127,8 @@
     <button data-target="orders-panel">📦 Tilaukset</button>
   </div>
 
-  <!-- OIKEA SISÄLTÖ -->
   <div class="admin-content">
 
-    <!-- RUOKALISTA PANEL -->
     <div id="menu-panel" class="panel-section active">
       <h2>Ruokalistan hallinta</h2>
       <table>
@@ -158,13 +154,12 @@
       </div>
     </div>
 
-    <!-- TÄYTTEET PANEL -->
     <div id="toppings-panel" class="panel-section">
       <h2>Täytteiden hallinta</h2>
       <p>Tänne tulee täytteiden CRUD myöhemmin.</p>
     </div>
 
-    <!-- TILAUKSET PANEL -->
+    
     <div id="orders-panel" class="panel-section">
       <h2>Tilaukset</h2>
       <p>Tänne tulee tilausten hallinta myöhemmin.</p>

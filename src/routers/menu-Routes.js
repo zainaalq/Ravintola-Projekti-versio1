@@ -10,20 +10,19 @@ import {
 
 const router = express.Router();
 
-// GET -> kaikki pizzat
+// HAE KAIKKI PIZZAT TÄYTTEILLÄ
 router.get("/", getAllPizzas);
 
-// GET -> yksittäinen pizza id:llä
+//  HAE YKSI PIZZA TÄYTTEILLÄ
 router.get("/:id", getPizzaDetails);
 
-
-// POST -> lisää uusi pizza
+//  LISÄÄ UUSI PIZZA
 router.post("/", createPizza);
 
-// PUT -> päivitä pizza
+//  PÄIVITÄ PIZZA
 router.put("/:id", editPizza);
 
-// DELETE -> poista pizza
+//  POISTA PIZZA
 router.delete("/:id", removePizza);
 
 export default router;

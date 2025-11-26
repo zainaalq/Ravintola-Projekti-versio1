@@ -679,7 +679,70 @@ header{
   }
 }
 
-/* Aktiivinen luokka joka näyttää menun (kun klikataan bars-ikonia) */
+/* Aktiivinen luokka joka näyttää menun  */
 .navbar.active {
   display: flex !important;
 }
+
+
+/* ======= KOTIPIZZA STYLE SELECT ======= */
+
+.select-group {
+  margin-bottom: 20px;
+}
+
+.select-header {
+  background: #000;
+  color: #fff;
+  padding: 12px 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.select-header span {
+  font-weight: 600;
+}
+
+.select-toggle {
+  background: transparent;
+  border: none;
+  color: #ff1a1a;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.select-toggle:hover {
+  color: #ff4d4d;
+}
+
+.select-list {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-top: 8px;
+  padding: 8px 0;
+}
+
+.select-list.hidden {
+  display: none;
+}
+
+.select-list li {
+  padding: 10px 15px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.select-list li:hover {
+  background: #ff1a1a;
+}
+
+.select-price {
+  opacity: 0.8;
+}
+

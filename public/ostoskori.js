@@ -1,12 +1,9 @@
 "use strict";
 
-// 🛒 Ostoskori data
+//  Ostoskori data
 let cart = [];
 
-// 🔹 Hakee kaikki + napit pizzakorteista
-const addButtons = document.querySelectorAll(".add-btn");
 
-// 🔹 Ostoskori UI elementit
 const cartBtn = document.getElementById("cart-btn");
 const cartPanel = document.getElementById("cart-panel");
 const closeCart = document.getElementById("close-cart");
@@ -15,40 +12,47 @@ const cartTotal = document.getElementById("cart-total");
 const cartCount = document.getElementById("cart-count");
 const clearCartBtn = document.getElementById("clear-cart");
 
-cartCount.style.display = "none"; // piilota numeromerkki alkuun
+if (cartCount) {
+  cartCount.style.display = "none"; 
+}
 
 
-// ➕ Lisää tuote ostoskoriin
-addButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const card = button.closest(".pizza-card");
 
-    const name = card.querySelector(".pizza-name").textContent;
-    const price = parseFloat(card.querySelector(".pizza-price").textContent.replace("€", ""));
-    const imgSrc = card.querySelector(".pizza-img").src; // ✅ lisää kuva
 
-    // tarkistetaan onko tuote jo ostoskorissa
-    const existingProduct = cart.find(item => item.name === name);
+document.addEventListener("click", (e) => {
+  const button = e.target.closest(".add-btn");
+  if (!button) return;
 
-    if (existingProduct) {
-      existingProduct.quantity++;
-    } else {
-      cart.push({ name, price, quantity: 1, img: imgSrc });
-    }
+  const card = button.closest(".pizza-card");
+  if (!card) return;
 
-    updateCartUI();
-  });
+  const name = card.querySelector(".pizza-name").textContent;
+  const price = parseFloat(
+    card.querySelector(".pizza-price").textContent.replace("€", "")
+  );
+  const imgSrc = card.querySelector(".pizza-img").src;
+
+  const existingProduct = cart.find((item) => item.name === name);
+
+  if (existingProduct) {
+    existingProduct.quantity++;
+  } else {
+    cart.push({ name, price, quantity: 1, img: imgSrc });
+  }
+
+  updateCartUI();
 });
 
 
-// 🔄 Päivitä ostoskori UI
+// Päivitä ostoskori UI
+
 function updateCartUI() {
   cartItemsList.innerHTML = "";
 
   let total = 0;
   let count = 0;
 
-  cart.forEach(item => {
+  cart.forEach((item) => {
     total += item.price * item.quantity;
     count += item.quantity;
 
@@ -69,17 +73,15 @@ function updateCartUI() {
       </div>
     `;
 
-    // ➕ Lisää määrä
     li.querySelector(".plus").addEventListener("click", () => {
       item.quantity++;
       updateCartUI();
     });
 
-    // ➖ Vähennä määrä
     li.querySelector(".minus").addEventListener("click", () => {
       item.quantity--;
       if (item.quantity <= 0) {
-        cart = cart.filter(p => p.name !== item.name);
+        cart = cart.filter((p) => p.name !== item.name);
       }
       updateCartUI();
     });
@@ -87,39 +89,38 @@ function updateCartUI() {
     cartItemsList.appendChild(li);
   });
 
-  // Päivitä hinta ja määrä
   cartTotal.textContent = total.toFixed(2);
   cartCount.textContent = count;
 
-  // bump animaatio hintaan
   cartTotal.classList.add("bump");
   setTimeout(() => cartTotal.classList.remove("bump"), 200);
 
-  // bump animaatio määrään
   cartCount.classList.add("bump");
   setTimeout(() => cartCount.classList.remove("bump"), 200);
 
-  // Näytä tai piilota lukumäärä
   cartCount.style.display = count > 0 ? "inline-flex" : "none";
 }
 
 
-// 🛍️ Avaa ostoskori paneeli
-cartBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  cartPanel.classList.add("open");
-});
+// Ostoskoripaneeli auki / kiinni
 
-// ❌ Sulje ostoskori paneeli
-closeCart.addEventListener("click", () => {
-  cartPanel.classList.remove("open");
-});
-
-// 🧹 TYHJENNÄ KOKO OSTOSKORI (ROSLAKORI)
-if (clearCartBtn) {
-  clearCartBtn.addEventListener("click", () => {
-    cart = []; // tyhjennä taulukko
-    updateCartUI(); // päivitä näkymä
+if (cartBtn) {
+  cartBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    cartPanel.classList.add("open");
   });
 }
 
+if (closeCart) {
+  closeCart.addEventListener("click", () => {
+    cartPanel.classList.remove("open");
+  });
+}
+
+// TYHJENNÄ KOKO OSTOSKORI
+if (clearCartBtn) {
+  clearCartBtn.addEventListener("click", () => {
+    cart = [];
+    updateCartUI();
+  });
+}

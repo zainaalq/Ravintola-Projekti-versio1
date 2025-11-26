@@ -1,15 +1,14 @@
 import {
-  listAllPizzas,
-  findPizzaById,
+  listPizzasWithToppings,
   findPizzaWithToppings,
   addPizza,
   updatePizza,
   deletePizza,
 } from "../models/MenuItem.models.js";
 
-// ✅ GET ALL
+//  GET ALL — palauttaa kaikki pizzat täytteillä
 const getAllPizzas = async (req, res) => {
-  const pizzas = await listAllPizzas();
+  const pizzas = await listPizzasWithToppings();
 
   if (pizzas.error) {
     return res.status(500).json({ error: pizzas.error });
@@ -18,40 +17,25 @@ const getAllPizzas = async (req, res) => {
   res.json(pizzas);
 };
 
-// ✅ GET ONE PIZZA + TOPPINGS
+//  GET ONE — palauttaa yhden pizzan täytteillä
 const getPizzaDetails = async (req, res) => {
   const id = req.params.id;
 
   const pizza = await findPizzaWithToppings(id);
 
-  if (!pizza || pizza.length === 0) {
+  if (!pizza) {
     return res.status(404).json({ error: "Pizza not found" });
   }
 
-  const formatted = {
-    id: pizza[0].id,
-    name: pizza[0].name,
-    description: pizza[0].description,
-    base_price: pizza[0].base_price,
-    image: pizza[0].image,
-    toppings: pizza.map((row) => ({
-      id: row.topping_id,
-      name: row.topping_name,
-      price: row.topping_price,
-      category: row.category,
-      is_default: row.is_default,
-    })),
-  };
-
-  res.json(formatted);
+  res.json(pizza);
 };
 
-// ✅ CREATE
+//  CREATE
 const createPizza = async (req, res) => {
   const { name, description, base_price, image } = req.body;
 
   if (!name || !base_price) {
-    return res.status(400).json({ error: "Name and base_price are required" });
+    return res.status(400).json({ error: "name and base_price are required" });
   }
 
   const result = await addPizza({ name, description, base_price, image });
@@ -66,7 +50,7 @@ const createPizza = async (req, res) => {
   });
 };
 
-// ✅ UPDATE
+//  UPDATE
 const editPizza = async (req, res) => {
   const id = req.params.id;
   const { name, description, base_price, image } = req.body;
@@ -89,7 +73,7 @@ const editPizza = async (req, res) => {
   res.json({ message: "Pizza updated successfully" });
 };
 
-// ✅ DELETE
+// DELETE
 const removePizza = async (req, res) => {
   const id = req.params.id;
 
