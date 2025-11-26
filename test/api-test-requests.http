@@ -1,0 +1,13 @@
+
+###
+
+GET http://localhost:3000
+
+###
+
+### hae kaikki pizzat
+GET http://localhost:3000/api/menu
+
+### hae pizza id  avulla
+
+GET http://localhost:3000/api/menu/1
