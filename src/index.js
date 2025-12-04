@@ -1,5 +1,7 @@
 import express from "express";
 import menuRoutes from "./routers/menu-Routes.js";
+import drinkRoutes from "./routers/drinks-Routes.js";
+
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -17,6 +19,8 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 
 app.use("/api/menu", menuRoutes);
+app.use("/api/drinks", drinkRoutes);
+
 
 
 app.listen(3000, () => {
