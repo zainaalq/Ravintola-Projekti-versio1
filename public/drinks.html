@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Drinks – Pizza House</title>
+
+  <!-- Ostoskori + juomien skripti -->
+  <script src="ostoskori.js" defer></script>
+  <script src="drinkit.js" defer></script>
+  <script src="main.js" defer> </script>
+
+  <!-- Ikonit -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <style>
+    /* ===== GENERAL ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    body {
+      background: white;
+      overflow-x: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top:0;
+      width: 100%;
+      background: #000;
+      padding: 10px 4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+    }
+
+    .logo img {
+      width: 150px;
+    }
+
+    .navbar {
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+      padding-bottom: 3px;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      color: red;
+      border-bottom: 2px solid red;
+    }
+
+    .nav-content {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-content a {
+      color: white;
+      font-size: 22px;
+    }
+
+    /* ===== DRINKS SECTION ===== */
+    .menu {
+      padding: 200px 5% 50px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 2.4rem;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    .section-title span {
+      color: red;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+    }
+
+    /* ===== CARD ===== */
+    .pizza-card {
+      background: #000;
+      color: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      transition: 0.4s;
+    }
+
+    .pizza-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .pizza-img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      transition: 0.4s;
+    }
+
+    .pizza-card:hover .pizza-img {
+      transform: scale(1.05);
+    }
+
+    .pizza-info {
+      padding: 22px;
+      text-align: left;
+    }
+
+    .pizza-name {
+      font-size: 1.3rem;
+      color: red;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .pizza-desc {
+      opacity: 0.9;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    /* SIZE SELECTOR */
+    .size-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .size-options label {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 0.92rem;
+    }
+
+    .size-options input[type="radio"] {
+      accent-color: red;
+      cursor: pointer;
+    }
+
+    /* PRICE + BUTTON */
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .pizza-price {
+      background: red;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      background: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .add-btn:hover {
+      background: red;
+      color: white;
+      transform: scale(1.07);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 80px;
+      background: #000;
+      padding: 60px 5% 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .footer-bottom {
+      opacity: 0.7;
+      margin-top: 20px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <!-- DRINKS GRID -->
+  <section class="menu">
+    <h2 class="section-title">
+      Our <span>Drinks</span>
+    </h2>
+
+    <div class="menu-grid">
+
+      <!-- LISTA KAIKISTA JUOMISTA -->
+      <!-- 1. Coca Cola -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/coca cola.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Coca-Cola</h3>
+          <br>
+          
+
+          <div class="size-options">
+            <label><input type="radio" name="coke" value="Small" data-price="2.50" checked> Small (€2.50)</label>
+            <label><input type="radio" name="coke" value="Large" data-price="3.50"> Large (€3.50)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.50</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Pepsi -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/pepsi.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Pepsi</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="pepsi" value="Small" data-price="2.50" checked> Small (€2.50)</label>
+            <label><input type="radio" name="pepsi" value="Large" data-price="3.50"> Large (€3.50)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.50</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Fanta -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/fanta.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Fanta Orange</h3>
+          
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="fanta" value="Small" data-price="2.50" checked> Small (€2.50)</label>
+            <label><input type="radio" name="fanta" value="Large" data-price="3.50"> Large (€3.50)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.50</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Sprite -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/sprite.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Sprite</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="sprite" value="Small" data-price="2.50" checked> Small (€2.50)</label>
+            <label><input type="radio" name="sprite" value="Large" data-price="3.50"> Large (€3.50)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.50</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Red Bull -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/red bull.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Red Bull</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="rb" value="Small" data-price="3.00" checked> Small (€3.00)</label>
+            <label><input type="radio" name="rb" value="Large" data-price="4.00"> Large (€4.00)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€3.00</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Apple Juice -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/apple j..png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Apple Juice</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="apple" value="Small" data-price="2.80" checked> Small (€2.80)</label>
+            <label><input type="radio" name="apple" value="Large" data-price="3.80"> Large (€3.80)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.80</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Orange Juice -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/orange juice.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Orange Juice</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="oj" value="Small" data-price="2.80" checked> Small (€2.80)</label>
+            <label><input type="radio" name="oj" value="Large" data-price="3.80"> Large (€3.80)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€2.80</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Smoothie -->
+      <div class="pizza-card">
+        <img src="kuvat/juomat/smoothie.png" class="pizza-img">
+        <div class="pizza-info">
+          <h3 class="pizza-name">Smoothie</h3>
+          <br>
+
+          <div class="size-options">
+            <label><input type="radio" name="smoothie" value="Small" data-price="3.50" checked> Small (€3.50)</label>
+            <label><input type="radio" name="smoothie" value="Large" data-price="4.50"> Large (€4.50)</label>
+          </div>
+
+          <div class="price-row">
+            <p class="pizza-price selected-price">€3.50</p>
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+
+  <!-- ===== FOOTER (sama kuin pizzalla) ===== -->
+  <footer class="footer">
+    <p>© 2025 Pizza House — All rights reserved.</p>
+  </footer>
+
+
+
+
+  <!-- Automaattinen hinnan päivitys kun koko vaihtuu -->
+  <script>
+    document.querySelectorAll(".size-options input").forEach(radio => {
+      radio.addEventListener("change", () => {
+        const card = radio.closest(".pizza-card");
+        const priceLabel = card.querySelector(".selected-price");
+
+        const price = parseFloat(radio.dataset.price);
+        priceLabel.textContent = "€" + price.toFixed(2);
+      });
+    });
+  </script>
+
+</body>
+</html>
