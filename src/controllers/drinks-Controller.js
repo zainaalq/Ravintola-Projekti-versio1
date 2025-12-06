@@ -4,7 +4,7 @@ import {
   addDrink,
   updateDrink,
   deleteDrink
-} from "../models/Drinks.models.js";
+} from "../models/drinks.models.js";
 
 // Get all drinks
 const getAllDrinks = async (req, res) => {

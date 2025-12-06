@@ -7,6 +7,9 @@
     scroll-behavior: smooth;
     font-family: 'Open Sans', sans-serif;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 
 :root{
@@ -907,4 +910,110 @@ header{
 
 .modal-add-btn:hover {
   background: #b30000;
+}
+/* ===== DRINK-KORTIT (täysin sama kuin pizza — vain nimet vaihdettu) ===== */
+
+.drink-card {
+  background-color: #000;
+  color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+}
+
+.drink-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.drink-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.drink-card:hover .drink-img {
+  transform: scale(1.05);
+}
+
+.drink-info {
+  padding: 25px;
+  text-align: left;
+}
+
+.drink-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.3rem;
+  color: red;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.size-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.size-options label {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.92rem;
+}
+
+.size-options input[type="radio"] {
+  accent-color: red;
+  cursor: pointer;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.drink-price {
+  background-color: red;
+  color: white;
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.drink-price:hover {
+  background-color: #b30000;
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+
+.add-btn {
+  background-color: white;
+  color: #000;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: red;
+  color: white;
+  transform: scale(1.08);
 }

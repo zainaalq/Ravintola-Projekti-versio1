@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pizza House</title>
+  <title>Pizza Menu – Pizza House</title>
 
   <link rel="stylesheet" href="1.css" />
 
@@ -11,50 +11,121 @@
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
+  <script src="ostoskori.js" defer></script>
   <script src="app.js" defer></script>
-  <style>
-  .toppings-title {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.toppings-list {
-  margin: 5px 0 10px;
-  padding-left: 18px;
-  font-size: 13px;
-}
-.hidden {
-  display: none;
-}
-
-.toggle-toppings-btn {
-  margin-top: 10px;
-  padding: 6px 10px;
-  background: #ffb84d;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-.toggle-toppings-btn:hover {
-  background: #ffa726;
-}
-
-  </style>
 </head>
 
 <body>
 
-  <h1 style="text-align:center; margin-top:30px;">🍕 Pizza Menu</h1>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <a href="1.html" class="logo">
+      <img src="kuvat/pizza-logo.png" alt="Pizza House Logo" />
+    </a>
 
+    <ul class="navbar">
+      <li><a href="1.html">Home</a></li>
+      <li><a href="1.html#about">About Us</a></li>
+      <li><a href="menu.html" data-page="menu">Menu</a></li>
+
+      <li><a href="#">Lunch</a></li>
+      <li><a href="drinks.html">Drinks</a></li>
+      <li><a href="1.html#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-content">
+      <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+      <a href="#"><i class="fa-regular fa-user"></i></a>
+      <a href="#"><i class="fa-solid fa-heart"></i></a>
+
+      <a href="#" id="cart-btn" class="cart-btn">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span id="cart-count" class="cart-count"></span>
+      </a>
+
+      <a href="#"><i class="fa-solid fa-bars"></i></a>
+    </div>
+  </header>
+
+
+  <!-- ===== MENU TITLE ===== -->
+  <h1 style="text-align:center; margin-top:120px;">🍕 Our Pizza Menu</h1>
+
+
+  <!-- ===== PIZZA MENU SECTION ===== -->
   <section class="menu" id="menu">
     <div class="menu-grid" id="menu-grid">
       <!-- JS lisää pizzat tänne -->
     </div>
   </section>
+
+
+
+  <!-- ===== PIZZA MODAL ===== -->
+  <div id="pizza-modal" class="pizza-modal hidden">
+    <div class="pizza-modal-content">
+
+      <button id="close-pizza-modal" class="close-pizza-modal">✕</button>
+
+      <img id="modal-pizza-img" class="modal-pizza-img" src="" alt="Pizza">
+
+      <h2 id="modal-pizza-name"></h2>
+      <p id="modal-pizza-desc"></p>
+
+      <h3>Pohja</h3>
+      <ul id="modal-base"></ul>
+
+      <h3>Kastike</h3>
+      <ul id="modal-sauce"></ul>
+
+      <h3>Juusto</h3>
+      <ul id="modal-cheese"></ul>
+
+      <h3>Täytteet</h3>
+      <ul id="modal-toppings"></ul>
+
+      <div class="modal-footer">
+        <p class="modal-price">Hinta: €<span id="modal-price"></span></p>
+
+        <button id="modal-add-to-cart" class="modal-add-btn">
+          Lisää ostoskoriin
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ===== OSTOSKORI ===== -->
+  <div id="cart-panel" class="cart-panel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+
+    <ul id="cart-items" class="cart-list"></ul>
+
+    <div class="cart-footer">
+      <p>Total: €<span id="cart-total">0.00</span></p>
+
+      <button id="clear-cart" class="clear-cart-btn">
+        <i class="fa-solid fa-trash"></i> Clear Cart
+      </button>
+
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>
+
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2025 Pizza House — All rights reserved.</p>
+    </div>
+  </footer>
+
 
 </body>
 </html>
