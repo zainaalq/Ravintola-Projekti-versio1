@@ -35,14 +35,14 @@
       <img src="kuvat/pizza-logo.png" alt="Pizza House Logo" />
     </a>
 
-    <ul class="navbar">
-      <li><a href="#" data-page="Home">Home</a></li>
-      <li><a href="#"data-page="about">About Us</a></li>
-      <li><a href="menu" data-page="menu">Menu</a></li>
-      <li><a href="#" data-page="Lunch">Lunch</a></li>
-      <li><a href="drinks.html" data-page="drinks">Drinks</a></li>
-      <li><a href="#" data-page="contact">Contact</a></li>
-    </ul>
+   <ul class="navbar">
+  <li><a href="1.html">Home</a></li>
+  <li><a href="1.html#about">About Us</a></li>
+  <li><a href="menu.html">Menu</a></li>
+  <li><a href="#">Lunch</a></li>
+  <li><a href="drinks.html">Drinks</a></li>
+  <li><a href="1.html#contact">Contact</a></li>
+</ul>
 
     <div class="nav-content">
       <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
@@ -141,7 +141,7 @@
       </div>
     </div>
 
-    <div class="footer-form">
+    <div class="footer-form" id="contact">
       <h3>Send Feedback / Reservation</h3>
       <form action="#" class="feedback-form">
         <div class="form-row">
@@ -185,6 +185,22 @@
       <button class="checkout-btn">Checkout</button>
     </div>
   </div>
+
+
+
+<script>
+  /*kun avaa contact linki niin => vie suorra sinne  */
+  window.addEventListener("load", () => {
+    if (window.location.hash === "#contact") {
+      const section = document.querySelector("#contact");
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 200); 
+      }
+    }
+  });
+</script>
 
 </body>
 </html>

@@ -3,7 +3,7 @@ CREATE DATABASE pizza_project;
 USE pizza_project;
 
 -----------------------------------------------------
--- TAULUT
+-- PIZZAT
 -----------------------------------------------------
 
 CREATE TABLE menu_items (
@@ -14,12 +14,21 @@ CREATE TABLE menu_items (
   image VARCHAR(255)
 );
 
+-----------------------------------------------------
+-- TÄYTTEET (POHJA, KASTIKE, JUUSTO, TÄYTE)
+-----------------------------------------------------
+
 CREATE TABLE toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   price DECIMAL(5,2) NOT NULL DEFAULT 0.00,
-  category ENUM('base', 'sauce', 'cheese', 'topping') NOT NULL
+  category ENUM('base', 'sauce', 'cheese', 'topping') NOT NULL,
+  selection_type ENUM('single','multi') NOT NULL DEFAULT 'multi'
 );
+
+-----------------------------------------------------
+-- OLETUSTÄYTTEET PER PIZZA
+-----------------------------------------------------
 
 CREATE TABLE pizza_toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,36 +40,63 @@ CREATE TABLE pizza_toppings (
 );
 
 -----------------------------------------------------
--- TÄYTTEET
+-- OSTOSKORI / TILATTU PIZZA
 -----------------------------------------------------
 
-INSERT INTO toppings (name, price, category) VALUES
-('Normal crust',        0.00, 'base'),
-('Gluten-free crust',   1.50, 'base'),
-
-('Tomato sauce',        0.00, 'sauce'),
-('Pesto sauce',         1.00, 'sauce'),
-('BBQ sauce',           1.00, 'sauce'),
-('Olive oil',           0.00, 'sauce'),
-
-('Mozzarella',          0.00, 'cheese'),
-('Parmesan',            1.00, 'cheese'),
-
-('Black olives',        0.50, 'topping'),
-('Corn',                0.50, 'topping'),
-('Mushrooms',           0.60, 'topping'),
-('Green peppers',       0.50, 'topping'),
-('Cherry tomatoes',     0.70, 'topping'),
-('Spinach',             0.60, 'topping'),
-('Basil',               0.30, 'topping'),
-('Pineapple',           0.80, 'topping'),
-('Red onions',          0.50, 'topping'),
-('Pepperoni',           1.50, 'topping'),
-('Ham',                 1.40, 'topping'),
-('Grilled chicken',     1.80, 'topping');
+CREATE TABLE order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  menu_item_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  base_price DECIMAL(5,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
+);
 
 -----------------------------------------------------
--- PIZZAT 
+-- TILAUKSEN TÄYTTEET (single & multi valinnat)
+-----------------------------------------------------
+
+CREATE TABLE order_item_toppings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_item_id INT NOT NULL,
+  topping_id INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  mode ENUM('single','multi') NOT NULL DEFAULT 'multi',
+  FOREIGN KEY (order_item_id) REFERENCES order_items(id) ON DELETE CASCADE,
+  FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE CASCADE
+);
+
+-----------------------------------------------------
+-- TÄYTTEIDEN LISÄYS (oikeat id:t)
+-----------------------------------------------------
+
+INSERT INTO toppings (name, price, category, selection_type) VALUES
+('Normal crust',        0.00, 'base',   'single'),   -- id 1
+('Gluten-free crust',   0.50, 'base',   'single'),   -- id 2
+
+('Tomato sauce',        0.00, 'sauce',  'single'),   -- id 3
+('Pesto sauce',         0.00, 'sauce',  'single'),   -- id 4
+('BBQ sauce',           0.00, 'sauce',  'single'),   -- id 5
+('Olive oil',           0.00, 'sauce',  'single'),   -- id 6
+
+('Mozzarella',          0.00, 'cheese', 'multi'),    -- id 7
+('Parmesan',            1.00, 'cheese', 'multi'),    -- id 8
+
+('Black olives',        0.50, 'topping','multi'),    -- id 9
+('Corn',                0.50, 'topping','multi'),    -- id 10
+('Mushrooms',           0.60, 'topping','multi'),    -- id 11
+('Green peppers',       0.50, 'topping','multi'),    -- id 12
+('Cherry tomatoes',     0.70, 'topping','multi'),    -- id 13
+('Spinach',             0.60, 'topping','multi'),    -- id 14
+('Basil',               0.30, 'topping','multi'),    -- id 15
+('Pineapple',           0.80, 'topping','multi'),    -- id 16
+('Red onions',          0.50, 'topping','multi'),    -- id 17
+('Pepperoni',           1.50, 'topping','multi'),    -- id 18
+('Ham',                 1.40, 'topping','multi'),    -- id 19
+('Grilled chicken',     1.80, 'topping','multi');    -- id 20
+
+-----------------------------------------------------
+-- PIZZAT (VALMIIT TUOTTEET)
 -----------------------------------------------------
 
 INSERT INTO menu_items (name, description, base_price, image) VALUES
@@ -79,7 +115,7 @@ INSERT INTO menu_items (name, description, base_price, image) VALUES
  11.80,
  'hawaiian.png'),
 
-('Veggie Mix',
+('Mix',
  'Tomato sauce, mozzarella and mixed vegetables.',
  11.40,
  'mix.pizza.png'),
@@ -105,7 +141,7 @@ INSERT INTO menu_items (name, description, base_price, image) VALUES
  'gluten_free_chicken_pesto.png');
 
 -----------------------------------------------------
--- OLETUSTÄYTTEET
+-- OLETUSTÄYTTEET PIZZOILLE (KORJATUT JA OIKEAT)
 -----------------------------------------------------
 
 -- Margherita
@@ -131,7 +167,7 @@ INSERT INTO pizza_toppings (pizza_id, topping_id) VALUES
 (3, 19),
 (3, 16);
 
--- Veggie Mix
+-- Mix (veggie mix)
 INSERT INTO pizza_toppings (pizza_id, topping_id) VALUES
 (4, 1),
 (4, 3),

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+  <a href="#" class="logo">
+    <img src="kuvat/pizza-logo.png" alt="Pizza House Logo" />
+  </a>
+
+  <ul class="navbar">
+    <li><a href="1.html">Home</a></li>
+    <li><a href="#" data-page="about">About Us</a></li>
+    <li><a href="menu.html" data-page="menu">Menu</a></li>
+    <li><a href="#" data-page="Lunch">Lunch</a></li>
+    <li><a href="drinks.html" data-page="drinks">Drinks</a></li>
+    <li><a href="#" data-page="contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-content">
+    <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a href="#"><i class="fa-regular fa-user"></i></a>
+    <a href="#"><i class="fa-solid fa-heart"></i></a>
+    <a href="#" id="cart-btn" class="cart-btn">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span id="cart-count" class="cart-count"></span>
+    </a>
+    <a href="#"><i class="fa-solid fa-bars"></i></a>
+  </div>
+</header>
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("header-container").innerHTML = html;
+    });
+</script>
+
+</body>
+</html>
