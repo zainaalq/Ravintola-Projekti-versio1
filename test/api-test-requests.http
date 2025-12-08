@@ -11,3 +11,21 @@ GET http://localhost:3000/api/menu
 ### hae pizza id  avulla
 
 GET http://localhost:3000/api/menu/1
+
+
+
+
+### get favorite items
+GET http://localhost:3000/api/favorites
+
+### add favorite item
+POST http://localhost:3000/api/favorites/add
+
+
+###
+POST http://localhost:3000/api/favorites/remove
+
+
+### tilaus 
+POST http://localhost:3000/api/orders
+

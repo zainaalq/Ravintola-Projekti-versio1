@@ -1,10 +1,13 @@
 "use strict";
 
-// =======================
-//  OSTOSKORI DATA
-// =======================
-let cart = [];
+/* ============================================
+   LATAA OSTOSKORI LOCALSTORAGesta
+============================================ */
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+/* ============================================
+   ELEMENTTIVALINNAT
+============================================ */
 const cartBtn = document.getElementById("cart-btn");
 const cartPanel = document.getElementById("cart-panel");
 const closeCart = document.getElementById("close-cart");
@@ -14,10 +17,19 @@ const cartCount = document.getElementById("cart-count");
 const clearCartBtn = document.getElementById("clear-cart");
 
 if (cartCount) {
-  cartCount.style.display = "none";
+  cartCount.style.display = cart.length > 0 ? "inline-flex" : "none";
 }
 
-// Yleinen apufunktio: lisää/merge tuote koriin
+/* ============================================
+   TALOLETAA OSTOSKORI LOCALSTORAGEEN
+============================================ */
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* ============================================
+   LISÄÄ TUOTE OSTOSKORIIN
+============================================ */
 function addItemToCart(item) {
   const existing = cart.find((p) => p.id === item.id);
 
@@ -29,26 +41,24 @@ function addItemToCart(item) {
   }
 
   updateCartUI();
+  saveCart();
 }
 
-// =======================
-//  LISÄÄ PIZZA KORTISTA (NOPEA LISÄYS)
-// =======================
+/* ============================================
+   LISÄÄ PIZZA KORTISTA (NOPEA LISÄYS)
+============================================ */
 document.addEventListener("click", (e) => {
   const button = e.target.closest(".add-btn");
   if (!button) return;
 
   const card = button.closest(".pizza-card");
-  if (!card) return; // ei pizza
+  if (!card) return; // ei pizza, ohitetaan
 
   const name = card.querySelector(".pizza-name").textContent;
-  const price = parseFloat(
-    card.querySelector(".pizza-price").textContent.replace("€", "")
-  );
+  const price = parseFloat(card.querySelector(".pizza-price").textContent.replace("€", ""));
   const imgSrc = card.querySelector(".pizza-img").src;
 
-  // yksinkertainen pizza, ilman täyteinfoa
-  const uniqueId = `pizza-${name}`;
+  const uniqueId = `pizza-${name.toLowerCase().replace(/\s+/g, "")}`;
 
   addItemToCart({
     id: uniqueId,
@@ -60,13 +70,13 @@ document.addEventListener("click", (e) => {
     toppings: [],
     price,
     img: imgSrc,
-    quantity: 1,
+    quantity: 1
   });
 });
 
-// =======================
-//  LISÄÄ JUOMA KORTISTA (SIZE SUPPORT)
-// =======================
+/* ============================================
+   LISÄÄ JUOMA KORTISTA (KOKO TALLENTUU)
+============================================ */
 document.addEventListener("click", (e) => {
   const button = e.target.closest(".add-btn");
   if (!button) return;
@@ -81,7 +91,7 @@ document.addEventListener("click", (e) => {
   const size = selectedRadio.dataset.size;
   const price = parseFloat(selectedRadio.dataset.price);
 
-  const uniqueId = `drink-${name}-${size}`;
+  const uniqueId = `drink-${name}-${size}`.toLowerCase().replace(/\s+/g, "");
 
   addItemToCart({
     id: uniqueId,
@@ -90,21 +100,20 @@ document.addEventListener("click", (e) => {
     size,
     price,
     img: imgSrc,
-    quantity: 1,
+    quantity: 1
   });
 });
 
-// =======================
-//  MODAALISTA LISÄTTY PIZZA (KOTIPIZZA-TYYLI)
-// =======================
-// Tätä kutsutaan app.js:stä: window.addCustomPizzaToCart(item)
+/* ============================================
+   CUSTOM PIZZA (MODAALISTA)
+============================================ */
 window.addCustomPizzaToCart = function (pizzaItem) {
   addItemToCart(pizzaItem);
 };
 
-// =======================
-//  PÄIVITÄ OSTOSKORI UI
-// =======================
+/* ============================================
+   PÄIVITÄ OSTOSKORI-UI
+============================================ */
 function updateCartUI() {
   cartItemsList.innerHTML = "";
 
@@ -119,7 +128,6 @@ function updateCartUI() {
     const li = document.createElement("li");
     li.classList.add("cart-item");
 
-    // lisätään täyte-info pizzalle
     let configText = "";
 
     if (item.type === "pizza") {
@@ -128,22 +136,12 @@ function updateCartUI() {
       if (item.base) parts.push(item.base.name);
       if (item.sauce) parts.push(item.sauce.name);
 
-      if (item.cheese && item.cheese.length) {
-        parts.push(
-          "Juusto: " +
-            item.cheese
-              .map((t) => `${t.name}${t.qty > 1 ? " x" + t.qty : ""}`)
-              .join(", ")
-        );
+      if (item.cheese?.length) {
+        parts.push("Juusto: " + item.cheese.map(t => `${t.name}${t.qty > 1 ? " x" + t.qty : ""}`).join(", "));
       }
 
-      if (item.toppings && item.toppings.length) {
-        parts.push(
-          "Täytteet: " +
-            item.toppings
-              .map((t) => `${t.name}${t.qty > 1 ? " x" + t.qty : ""}`)
-              .join(", ")
-        );
+      if (item.toppings?.length) {
+        parts.push("Täytteet: " + item.toppings.map(t => `${t.name}${t.qty > 1 ? " x" + t.qty : ""}`).join(", "));
       }
 
       configText = parts.join(" | ");
@@ -152,37 +150,32 @@ function updateCartUI() {
     li.innerHTML = `
       <img src="${item.img}" class="cart-img">
       <div class="cart-item-info">
-          <span class="cart-name">
-            ${item.name} ${item.size ? "(" + item.size + ")" : ""} x${
-      item.quantity
-    }
-          </span>
-          ${
-            configText
-              ? `<div class="cart-config">${configText}</div>`
-              : ""
-          }
-          <span class="cart-price">€${lineTotal.toFixed(2)}</span>
+        <span class="cart-name">${item.name} ${item.size ? "(" + item.size + ")" : ""} x${item.quantity}</span>
+        ${configText ? `<div class="cart-config">${configText}</div>` : ""}
+        <span class="cart-price">€${lineTotal.toFixed(2)}</span>
       </div>
+
       <div class="quantity-controls">
-          <button class="minus">−</button>
-          <button class="plus">+</button>
+        <button class="minus">−</button>
+        <button class="plus">+</button>
       </div>
     `;
 
-    // Lisää määrä
+    // + nappi
     li.querySelector(".plus").addEventListener("click", () => {
       item.quantity++;
       updateCartUI();
+      saveCart();
     });
 
-    // Vähennä määrä
+    // - nappi
     li.querySelector(".minus").addEventListener("click", () => {
       item.quantity--;
       if (item.quantity <= 0) {
         cart = cart.filter((p) => p.id !== item.id);
       }
       updateCartUI();
+      saveCart();
     });
 
     cartItemsList.appendChild(li);
@@ -190,16 +183,17 @@ function updateCartUI() {
 
   cartTotal.textContent = total.toFixed(2);
   cartCount.textContent = count;
-
   cartCount.style.display = count > 0 ? "inline-flex" : "none";
 
   cartCount.classList.add("bump");
   setTimeout(() => cartCount.classList.remove("bump"), 200);
+
+  saveCart();
 }
 
-// =======================
-//  OSTOSKORIN AVAUS / SULKU
-// =======================
+/* ============================================
+   AVAA / SULJE OSTOSKORI
+============================================ */
 if (cartBtn) {
   cartBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -213,12 +207,32 @@ if (closeCart) {
   });
 }
 
-// =======================
-//  TYHJENNÄ KOKO OSTOSKORI
-// =======================
+/* ============================================
+   TYHJENNÄ OSTOSKORI
+============================================ */
 if (clearCartBtn) {
   clearCartBtn.addEventListener("click", () => {
     cart = [];
+    localStorage.removeItem("cart");
     updateCartUI();
   });
 }
+// =======================
+// CHECKOUT → siirry toiselle sivulle
+// =======================
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".checkout-btn")) {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    // Tallenna ostoskori mukaan checkout-sivulle
+    saveCart();
+
+    // Siirry checkout-sivulle
+    window.location.href = "checkout.html";
+  }
+});
+
+

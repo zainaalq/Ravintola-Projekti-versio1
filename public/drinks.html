@@ -15,60 +15,80 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@500;700&display=swap"
   />
-
-  <script src="ostoskori.js" defer></script>
-  <script src="drinks.js" defer></script>
-  <script src="main.js" defer></script>
-
-  
 </head>
 
 <body>
 
-  <!-- ===== Header ===== -->
+  <!-- ===== HEADER ===== -->
   <header>
     <a href="#" class="logo">
       <img src="kuvat/pizza-logo.png" alt="Pizza House Logo" />
     </a>
 
-   <ul class="navbar">
-  <li><a href="1.html">Home</a></li>
-  <li><a href="1.html#about">About Us</a></li>
-  <li><a href="menu.html">Menu</a></li>
-  <li><a href="#">Lunch</a></li>
-  <li><a href="drinks.html">Drinks</a></li>
-  <li><a href="1.html#contact">Contact</a></li>
-</ul>
-
+    <ul class="navbar">
+      <li><a href="1.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="#">Lunch</a></li>
+      <li><a href="drinks.html">Drinks</a></li>
+      <li><a href="1.html#contact">Contact</a></li>
+    </ul>
 
     <div class="nav-content">
-      <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-      <a href="#"><i class="fa-regular fa-user"></i></a>
-      <a href="#"><i class="fa-solid fa-heart"></i></a>
+      <a><i class="fa-solid fa-magnifying-glass"></i></a>
+      <a><i class="fa-regular fa-user"></i></a>
+
+      <a href="#" class="fav-btn">
+        <i class="fa-solid fa-heart"></i>
+        <span id="fav-count" class="fav-count"></span>
+      </a>
 
       <a href="#" id="cart-btn" class="cart-btn">
         <i class="fa-solid fa-bag-shopping"></i>
         <span id="cart-count" class="cart-count">0</span>
       </a>
 
-      <a href="#"><i class="fa-solid fa-bars"></i></a>
+      <a href="#" id="menu-btn" class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></a>
+
+
+
     </div>
   </header>
 
-  <!-- DRINKS GRID -->
+  <!-- MOBILE SLIDE MENU -->
+<div id="mobile-menu" class="mobile-menu">
+  <button id="close-mobile-menu" class="close-mobile-menu">✕</button>
+
+  <ul>
+    <li><a href="1.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="#">Lunch</a></li>
+    <li><a href="drinks.html">Drinks</a></li>
+    <li><a href="1.html#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- TUMMENNUS TAUSTALLE -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
+
+  
+  <!-- ===== DRINKS GRID ===== -->
   <section class="menu">
     <h2 class="section-title">Our <span>Drinks</span></h2>
 
     <div class="menu-grid" id="drinks-container">
-      <!-- Juomakortit luodaan dynaamisesti drinks.js:llä -->
+      <!-- juomat tulevat drinks.js:llä -->
     </div>
   </section>
+
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <p>© 2025 Pizza House — All rights reserved.</p>
   </footer>
-<!-- ===== OSTOSKORI ===== -->
+
+
+  <!-- ===== OSTOSKORI (vain yksi, ei duplikaatteja!) ===== -->
   <div id="cart-panel" class="cart-panel">
     <div class="cart-header">
       <h3>Your Cart</h3>
@@ -86,5 +106,54 @@
       <button class="checkout-btn">Checkout</button>
     </div>
   </div>
+
+
+  <!-- ===== SUOSIKIT PANEELI ===== -->
+  <div id="fav-panel" class="fav-panel">
+    <div class="fav-header">
+      <h3>Your Favorites</h3>
+      <button id="close-fav" class="close-fav">✕</button>
+    </div>
+
+    <ul id="fav-list" class="fav-list"></ul>
+  </div>
+
+
+  <!-- Smooth scroll contact -->
+  <script>
+    window.addEventListener("load", () => {
+      if (window.location.hash === "#contact") {
+        const section = document.querySelector("#contact");
+        if (section) {
+          setTimeout(() => {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 200);
+        }
+      }
+    });
+  </script>
+
+
+  <!-- ================= SCRIPT ORDER ================= -->
+  <!-- 1. app.js → suosikit + laskurit -->
+  <script src="app.js" defer></script>
+
+  <!-- 2. main.js → header toiminnot, modaalit -->
+  <script src="main.js" defer></script>
+
+  <!-- 3. drinks.js → juomien lataus -->
+  <script src="drinks.js" defer></script>
+
+  <!-- 4. ostoskori.js → ostoskori -->
+  <script src="ostoskori.js" defer></script>
+
+  <!-- Päivitä suosikkilaskuri sivun latauksessa -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.updateFavCounter) updateFavCounter();
+      if (window.loadFavoriteHearts) loadFavoriteHearts();
+    });
+  </script>
+
 </body>
 </html>

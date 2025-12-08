@@ -25,7 +25,6 @@
 
     <ul class="navbar">
       <li><a href="1.html">Home</a></li>
-      <li><a href="1.html#about">About Us</a></li>
       <li><a href="menu.html" data-page="menu">Menu</a></li>
 
       <li><a href="#">Lunch</a></li>
@@ -36,7 +35,11 @@
     <div class="nav-content">
       <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
       <a href="#"><i class="fa-regular fa-user"></i></a>
-      <a href="#"><i class="fa-solid fa-heart"></i></a>
+
+      <a  class="fav-btn">
+         <i class="fa-solid fa-heart"></i>
+         <span id="fav-count" class="fav-count"></span>
+      </a>
 
       <a href="#" id="cart-btn" class="cart-btn">
         <i class="fa-solid fa-bag-shopping"></i>
@@ -46,6 +49,23 @@
       <a href="#"><i class="fa-solid fa-bars"></i></a>
     </div>
   </header>
+
+  <!-- MOBILE SLIDE MENU -->
+<div id="mobile-menu" class="mobile-menu">
+  <button id="close-mobile-menu" class="close-mobile-menu">✕</button>
+
+  <ul>
+    <li><a href="1.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="#">Lunch</a></li>
+    <li><a href="drinks.html">Drinks</a></li>
+    <li><a href="1.html#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- TUMMENNUS TAUSTALLE -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
 
 
   <!-- ===== MENU TITLE ===== -->
@@ -125,6 +145,60 @@
       <p>© 2025 Pizza House — All rights reserved.</p>
     </div>
   </footer>
+
+
+
+  
+  <!-- ===== OSTOSKORI ===== -->
+  <div id="cart-panel" class="cart-panel">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button id="close-cart" class="close-cart">✕</button>
+    </div>
+
+    <ul id="cart-items" class="cart-list"></ul>
+
+    <div class="cart-footer">
+      <p>Total: €<span id="cart-total">0.00</span></p>
+      <button id="clear-cart" class="clear-cart-btn">
+        <i class="fa-solid fa-trash"></i> Clear Cart
+      </button>
+
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>
+
+
+
+  <!--suosiki :) osuus -->
+  
+<div id="fav-panel" class="fav-panel">
+  <div class="fav-header">
+    <h3>Your Favorites</h3>
+    <button id="close-fav" class="close-fav">✕</button>
+  </div>
+
+  <ul id="fav-list" class="fav-list">
+    <!-- Suosikit lisätään tänne JS:llä -->
+  </ul>
+</div>
+
+
+
+<script>
+  /*kun avaa contact linki niin => vie suorra sinne  */
+  window.addEventListener("load", () => {
+    if (window.location.hash === "#contact") {
+      const section = document.querySelector("#contact");
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 200); 
+      }
+    }
+  });
+</script>
+
 
 
 </body>

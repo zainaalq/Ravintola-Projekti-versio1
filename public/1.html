@@ -37,7 +37,7 @@
 
    <ul class="navbar">
   <li><a href="1.html">Home</a></li>
-  <li><a href="1.html#about">About Us</a></li>
+
   <li><a href="menu.html">Menu</a></li>
   <li><a href="#">Lunch</a></li>
   <li><a href="drinks.html">Drinks</a></li>
@@ -47,7 +47,15 @@
     <div class="nav-content">
       <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
       <a href="#"><i class="fa-regular fa-user"></i></a>
-      <a href="#"><i class="fa-solid fa-heart"></i></a>
+
+
+      <a  class="fav-btn">
+         <i class="fa-solid fa-heart"></i>
+         <span id="fav-count" class="fav-count"></span>
+      </a>
+
+
+
       <a href="#" id="cart-btn" class="cart-btn">
          <i class="fa-solid fa-bag-shopping"></i>
          <span id="cart-count" class="cart-count"></span>
@@ -55,6 +63,23 @@
       <a href="#"><i class="fa-solid fa-bars"></i></a>
     </div>
   </header>
+
+  <!-- MOBILE SLIDE MENU -->
+<div id="mobile-menu" class="mobile-menu">
+  <button id="close-mobile-menu" class="close-mobile-menu">✕</button>
+
+  <ul>
+    <li><a href="1.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="#">Lunch</a></li>
+    <li><a href="drinks.html">Drinks</a></li>
+    <li><a href="1.html#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- TUMMENNUS TAUSTALLE -->
+<div id="menu-overlay" class="menu-overlay"></div>
+
 
 
   <!-- ===== Hero Section ===== -->
@@ -92,9 +117,11 @@
   <div id="pizza-modal" class="pizza-modal hidden">
     <div class="pizza-modal-content">
 
-      <button id="close-pizza-modal" class="close-pizza-modal">✕</button>
+      <div class="modal-img-wrap">
+    <button id="close-pizza-modal" class="close-pizza-modal">✕</button>
+    <img id="modal-pizza-img" class="modal-pizza-img" src="" alt="Pizza">
+</div>
 
-      <img id="modal-pizza-img" class="modal-pizza-img" src="" alt="Pizza">
 
       <h2 id="modal-pizza-name"></h2>
       <p id="modal-pizza-desc"></p>
@@ -185,6 +212,21 @@
       <button class="checkout-btn">Checkout</button>
     </div>
   </div>
+
+
+
+  <!--suosiki :) osuus -->
+  
+<div id="fav-panel" class="fav-panel">
+  <div class="fav-header">
+    <h3>Your Favorites</h3>
+    <button id="close-fav" class="close-fav">✕</button>
+  </div>
+
+  <ul id="fav-list" class="fav-list">
+    <!-- Suosikit lisätään tänne JS:llä -->
+  </ul>
+</div>
 
 
 

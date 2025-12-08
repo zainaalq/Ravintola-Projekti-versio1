@@ -1,4 +1,6 @@
+// ===============================
 // LATAA JUOMAT BACKENDISTA
+// ===============================
 async function loadDrinks() {
   try {
     const res = await fetch("/api/drinks");
@@ -11,6 +13,7 @@ async function loadDrinks() {
       const card = document.createElement("div");
       card.classList.add("drink-card");
 
+      // Luo radio-napit
       let sizeOptionsHTML = "";
       let firstPrice = drink.sizes[0]?.price ?? 0;
 
@@ -18,14 +21,17 @@ async function loadDrinks() {
         sizeOptionsHTML += `
           <label>
             <input type="radio" 
-                   name="drink-${drink.id}" 
-                   data-price="${s.price}"
-                   ${index === 0 ? "checked" : ""}>
+              name="drink-${drink.id}" 
+              data-size="${s.size}"
+              data-price="${s.price}"
+              ${index === 0 ? "checked" : ""}>
+
             ${s.size} (€${Number(s.price).toFixed(2)})
           </label>
         `;
       });
 
+      // Luo kortin sisältö
       card.innerHTML = `
         <img src="kuvat/juomat/${drink.image}" class="drink-img" alt="${drink.name}">
 
@@ -36,7 +42,9 @@ async function loadDrinks() {
 
           <div class="price-row">
             <p class="drink-price selected-price">€${Number(firstPrice).toFixed(2)}</p>
-            <button class="add-btn" data-id="${drink.id}">+</button>
+
+            <!-- NAPPi EI LISÄÄ KORIIN — ostoskori.js hoitaa -->
+            <button class="add-btn">+</button>
           </div>
         </div>
       `;
@@ -50,15 +58,22 @@ async function loadDrinks() {
   }
 }
 
-// Hinnan päivitys
+
+// ===============================
+// Dynaaminen hinnan päivitys
+// ===============================
 function enableDynamicPriceUpdates() {
   document.querySelectorAll(".size-options input").forEach(radio => {
     radio.addEventListener("change", () => {
       const card = radio.closest(".drink-card");
       const priceLabel = card.querySelector(".selected-price");
-      priceLabel.textContent = "€" + Number(radio.dataset.price).toFixed(2);
+
+      priceLabel.textContent =
+        "€" + Number(radio.dataset.price).toFixed(2);
     });
   });
 }
 
+
+// Lataa juomat
 document.addEventListener("DOMContentLoaded", loadDrinks);
