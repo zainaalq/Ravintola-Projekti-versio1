@@ -43,4 +43,27 @@ function loadPage(page) {
         });
     })();
 }
-// ...existing code...
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const menuBtn = document.getElementById("menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const closeMenu = document.getElementById("close-mobile-menu");
+    const overlay = document.getElementById("menu-overlay");
+
+    menuBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        mobileMenu.classList.add("active");
+        overlay.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", () => {
+        mobileMenu.classList.remove("active");
+        overlay.classList.remove("active");
+    });
+
+    overlay.addEventListener("click", () => {
+        mobileMenu.classList.remove("active");
+        overlay.classList.remove("active");
+    });
+});
