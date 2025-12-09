@@ -33,7 +33,7 @@ async function loadDrinks() {
 
       // Luo kortin sisältö
       card.innerHTML = `
-        <img src="kuvat/juomat/${drink.image}" class="drink-img" alt="${drink.name}">
+        <img src="${drink.image}" class="drink-img" alt="${drink.name}">
 
         <div class="drink-info">
           <h3 class="drink-name">${drink.name}</h3>
@@ -43,7 +43,7 @@ async function loadDrinks() {
           <div class="price-row">
             <p class="drink-price selected-price">€${Number(firstPrice).toFixed(2)}</p>
 
-            <!-- NAPPi EI LISÄÄ KORIIN — ostoskori.js hoitaa -->
+            <!-- Nappi EI LISÄÄ KORIIN — ostoskori.js hoitaa -->
             <button class="add-btn">+</button>
           </div>
         </div>
@@ -73,7 +73,6 @@ function enableDynamicPriceUpdates() {
     });
   });
 }
-
 
 // Lataa juomat
 document.addEventListener("DOMContentLoaded", loadDrinks);

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Juomien hallinta</title>
+
+  <link rel="stylesheet" href="admin-drinks.css">
+  <script src="admin-drinks.js" defer></script>
+
+  <style>
+    body {
+      background: #f5f5f5;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      background: black;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .add {
+      margin: 20px;
+      background: green;
+      color: white;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 95%;
+      margin: auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background: black;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .btn-edit {
+      background: #007bff;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-delete {
+      background: red;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-edit:hover,
+    .btn-delete:hover,
+    .add:hover,
+    .back-btn:hover {
+      opacity: 0.85;
+    }
+
+    .back-btn {
+      background: black;
+      color: white;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* MODAALI */
+    #modal {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal-box {
+      background: white;
+      width: 420px;
+      padding: 25px;
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+
+    .close-btn {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+      background: transparent;
+      border: none;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Juomien hallinta</h1>
+
+<button class="add" onclick="openAddModal()">+ Lisää juoma</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nimi</th>
+      <th>Pieni</th>
+      <th>Iso</th>
+      <th>Kuva</th>
+      <th>Toiminnot</th>
+    </tr>
+  </thead>
+  <tbody id="drinks-body"></tbody>
+</table>
+
+<div style="text-align:center; margin-top:30px;">
+  <button onclick="location.href='admin.html'" class="back-btn">← Takaisin</button>
+</div>
+
+<!-- =============== MODAALI =============== -->
+<div id="modal" class="hidden" onclick="backgroundClose(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+
+    <button class="close-btn" onclick="closeModal()">×</button>
+
+    <h2 id="modal-title">Muokkaa juomaa</h2>
+
+    <label>Nimi</label>
+    <input id="d-name" type="text">
+
+    <label>Kuva (valinnainen)</label>
+    <input id="d-image" type="file" accept="image/*">
+    <input id="old-image" type="hidden">
+
+    <label>Pieni hinta (€)</label>
+    <input id="d-small" type="number" step="0.01">
+
+    <label>Iso hinta (€)</label>
+    <input id="d-large" type="number" step="0.01">
+
+    <div style="margin-top:20px; display:flex; gap:10px;">
+      <button onclick="saveDrink()">Tallenna</button>
+      <button onclick="closeModal()">Peruuta</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

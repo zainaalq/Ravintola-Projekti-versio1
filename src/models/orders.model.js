@@ -13,49 +13,51 @@ export const createOrder = async (customer_name, phone, total_price) => {
     [customer_name, phone, total_price]
   );
 
-  return result.insertId; // palautetaan tilauksen ID
+  return result.insertId;
 };
-
 
 // -----------------------------------------
 // 2) LISÄÄ TUOTE ORDER_ITEMS-TAULUUN
 // -----------------------------------------
 export const addOrderItem = async (order_id, item) => {
   await db.execute(
-    `INSERT INTO order_items (order_id, item_name, size, price, quantity)
-     VALUES (?, ?, ?, ?, ?)`,
+    `INSERT INTO order_items 
+      (order_id, item_name, size, price, quantity, config)
+     VALUES (?, ?, ?, ?, ?, ?)
+    `,
     [
       order_id,
       item.name,
       item.size || null,
       item.price,
-      item.quantity
+      item.quantity,
+      item.config ? JSON.stringify(item.config) : null
     ]
   );
 };
-
 
 // -----------------------------------------
 // 3) HAE KAIKKI TILAUKSET (ADMIN)
 // -----------------------------------------
 export const getAllOrders = async () => {
   const [orders] = await db.execute(`SELECT * FROM orders ORDER BY id DESC`);
-
   const [items] = await db.execute(`SELECT * FROM order_items`);
 
-  // Liitetään tuotteet oikeaan tilaukseen
   const result = orders.map(order => ({
     ...order,
-    items: items.filter(i => i.order_id === order.id)
+    items: items
+      .filter(i => i.order_id === order.id)
+      .map(i => ({
+        ...i,
+        config: i.config ? JSON.parse(i.config) : null
+      }))
   }));
 
   return result;
 };
 
-
 // -----------------------------------------
-// 4) PÄIVITÄ TILAUKSEN STATUS
-//    (pending → accepted → completed → cancelled)
+// 4) PÄIVITÄ STATUS
 // -----------------------------------------
 export const updateOrderStatus = async (order_id, status) => {
   await db.execute(
@@ -64,9 +66,8 @@ export const updateOrderStatus = async (order_id, status) => {
   );
 };
 
-
 // -----------------------------------------
-// 5) POISTA TILAUS + SEN TUOTTEET
+// 5) POISTA TILAUS
 // -----------------------------------------
 export const deleteOrder = async (order_id) => {
   try {
