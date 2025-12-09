@@ -1,7 +1,7 @@
 "use strict";
 
 /* ============================
-   LUE OSTOSKORI LOCALSTORAGesta
+   LUE OSTOSKORI LOCALSTORAGEsta
 ============================ */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -57,10 +57,24 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   const customerName = document.getElementById("customer-name").value;
   const phone = document.getElementById("phone").value;
 
+  // 🔥 LÄHETÄMME CONFIG-KENTÄN MUKAAN
   const orderData = {
     customer_name: customerName,
     phone,
-    items: cart
+    items: cart.map(item => ({
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      size: item.size || null,
+      config: item.type === "pizza"
+        ? {
+            base: item.base,
+            sauce: item.sauce,
+            cheese: item.cheese,
+            toppings: item.toppings
+          }
+        : null
+    }))
   };
 
   try {
@@ -72,21 +86,12 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
 
     const data = await res.json();
 
-    /* ============================
-           🎉 ONNISTUNUT TILAUS
-    ============================ */
     if (data.success) {
-
-      // Tyhjennä ostoskori
       localStorage.removeItem("cart");
 
-      // Piilota formi
       document.getElementById("checkout-form").style.display = "none";
-
-      // Piilota tuotteet
       document.getElementById("order-summary").style.display = "none";
 
-      // Luo onnistumisikkuna
       const box = document.createElement("div");
       box.classList.add("order-success-box");
 
@@ -102,9 +107,7 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
       `;
 
       document.body.appendChild(box);
-    }
-
-    else {
+    } else {
       alert("Tilaus epäonnistui. Yritä uudelleen.");
     }
 

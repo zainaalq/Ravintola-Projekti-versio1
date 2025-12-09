@@ -1,169 +1,86 @@
-// =======================
-// ADMIN – TILAUSTEN LISTAUS
-// =======================
+// ===============================
+// LATAA JUOMAT BACKENDISTA
+// ===============================
+async function loadDrinks() {
+  try {
+    const res = await fetch("/api/drinks");
+    const drinks = await res.json();
 
-let currentEditOrder = null;
+    const container = document.getElementById("drinks-container");
+    container.innerHTML = "";
 
-// Lataa kaikki tilaukset taulukkoon
-async function loadOrders() {
-    const res = await fetch("/api/orders");
-    const orders = await res.json();
+    drinks.forEach((drink) => {
+      const card = document.createElement("div");
+      card.classList.add("drink-card");
 
-    const tbody = document.querySelector("#orders-table tbody");
-    tbody.innerHTML = "";
+      // Luo radio-napit
+      let sizeOptionsHTML = "";
+      let firstPrice = drink.sizes[0]?.price ?? 0;
 
-    orders.forEach(order => {
-        const row = document.createElement("tr");
-
-        const itemsList = order.items
-            .map(i => `${i.item_name} x${i.quantity}`)
-            .join("<br>");
-
-        row.innerHTML = `
-            <td>${order.id}</td>
-            <td>${order.customer_name}</td>
-            <td>${order.phone}</td>
-            <td>${itemsList}</td>
-            <td>€${Number(order.total_price).toFixed(2)}</td>
-
-            <td>
-                <select onchange="updateStatus(${order.id}, this.value)">
-                    <option value="pending" ${order.status === "pending" ? "selected" : ""}>Pending</option>
-                    <option value="in_progress" ${order.status === "in_progress" ? "selected" : ""}>In progress</option>
-                    <option value="delivered" ${order.status === "delivered" ? "selected" : ""}>Delivered</option>
-                </select>
-            </td>
-
-            <td>
-                <button class="edit-btn" onclick="openOrderEditor(${order.id})">Muokkaa</button>
-                <button class="delete-btn" onclick="deleteOrder(${order.id})">Poista</button>
-            </td>
+      drink.sizes.forEach((s, index) => {
+        sizeOptionsHTML += `
+          <label>
+            <input type="radio" 
+              name="drink-${drink.id}" 
+              data-size="${s.size}"
+              data-price="${s.price}"
+              ${index === 0 ? "checked" : ""}>
+            ${s.size} (€${Number(s.price).toFixed(2)})
+          </label>
         `;
+      });
 
-        tbody.appendChild(row);
-    });
-}
+      // 🔥 TÄRKEÄ KORJAUS: oikea kuva-polku
+      // Vanha: kuvat/juomat/${drink.image}
+      // Uusi: /kuvat/${drink.image}
+      const imageUrl = `/kuvat/${drink.image}`;
 
-// =======================
-// TILAN PÄIVITYS
-// =======================
-async function updateStatus(id, status) {
-    await fetch(`/api/orders/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status })
-    });
+      // Luo kortin sisältö
+      card.innerHTML = `
+        <img src="${imageUrl}" class="drink-img" alt="${drink.name}">
 
-    loadOrders();
-}
+        <div class="drink-info">
+          <h3 class="drink-name">${drink.name}</h3>
 
-// =======================
-// TILAAUKSEN POISTO
-// =======================
-async function deleteOrder(id) {
-    if (!confirm("Poistetaanko tilaus?")) return;
+          <div class="size-options">${sizeOptionsHTML}</div>
 
-    await fetch(`/api/orders/${id}`, { method: "DELETE" });
-    loadOrders();
-}
+          <div class="price-row">
+            <p class="drink-price selected-price">€${Number(firstPrice).toFixed(2)}</p>
 
-// =======================
-// TILAAUKSEN MUOKKAUSMODAALI
-// =======================
+            <!-- Nappi lisää ostoskoriin — ostoskori.js hoitaa -->
+            <button class="add-btn">+</button>
+          </div>
+        </div>
+      `;
 
-// Avaa editointi
-async function openOrderEditor(id) {
-    const res = await fetch(`/api/orders/${id}`);
-    const order = await res.json();
-
-    currentEditOrder = order;
-
-    document.getElementById("edit-order-id").textContent = order.id;
-    document.getElementById("edit-customer").value = order.customer_name;
-    document.getElementById("edit-phone").value = order.phone;
-    document.getElementById("edit-status").value = order.status;
-
-    renderEditItems();
-
-    document.getElementById("edit-modal").classList.remove("hidden");
-}
-
-// Renderöi tuotteet
-function renderEditItems() {
-    const box = document.getElementById("edit-items");
-    box.innerHTML = "";
-
-    currentEditOrder.items.forEach((item, i) => {
-        const div = document.createElement("div");
-        div.classList.add("edit-item");
-
-        div.innerHTML = `
-            <span>${item.item_name} (€${item.price})</span>
-
-            <input type="number" min="1" value="${item.quantity}"
-                onchange="changeQty(${i}, this.value)">
-
-            <button onclick="removeItem(${i})">Poista</button>
-        `;
-
-        box.appendChild(div);
+      container.appendChild(card);
     });
 
-    updateEditTotal();
+    enableDynamicPriceUpdates();
+
+  } catch (err) {
+    console.error("Juomien latausvirhe:", err);
+  }
 }
 
-// Määrän muutos
-function changeQty(i, qty) {
-    currentEditOrder.items[i].quantity = Number(qty);
-    updateEditTotal();
-}
 
-// Poista tuote
-function removeItem(i) {
-    currentEditOrder.items.splice(i, 1);
-    renderEditItems();
-}
+// ===============================
+// DYNAAMINEN HINNAN PÄIVITYS
+// ===============================
+function enableDynamicPriceUpdates() {
+  document.querySelectorAll(".size-options input").forEach(radio => {
+    radio.addEventListener("change", () => {
+      const card = radio.closest(".drink-card");
+      const priceLabel = card.querySelector(".selected-price");
 
-// Laske uusi hinta
-function updateEditTotal() {
-    const total = currentEditOrder.items.reduce((sum, item) => {
-        return sum + Number(item.price) * Number(item.quantity);
-    }, 0);
-
-    currentEditOrder.total_price = total;
-    document.getElementById("edit-total").textContent = total.toFixed(2);
-}
-
-// =======================
-// TALLENNA TILAUKSEN MUUTOKSET
-// =======================
-
-async function saveOrder() {
-    const payload = {
-        customer_name: document.getElementById("edit-customer").value,
-        phone: document.getElementById("edit-phone").value,
-        status: document.getElementById("edit-status").value,
-        items: currentEditOrder.items,
-        total_price: currentEditOrder.total_price
-    };
-
-    await fetch(`/api/orders/${currentEditOrder.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      priceLabel.textContent =
+        "€" + Number(radio.dataset.price).toFixed(2);
     });
-
-    closeEditor();
-    loadOrders();
+  });
 }
 
-document.getElementById("save-order-btn").onclick = saveOrder;
 
-// Sulje modaali
-function closeEditor() {
-    document.getElementById("edit-modal").classList.add("hidden");
-}
-
-// Lataa tilaukset sisään
-loadOrders();
-
+// ===============================
+// LATAA JUOMAT SIVUN AVAUKSESSA
+// ===============================
+document.addEventListener("DOMContentLoaded", loadDrinks);

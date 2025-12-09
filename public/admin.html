@@ -1,180 +1,138 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-<meta charset="UTF-8">
-<title>Admin / Tilaukset</title>
+  <meta charset="UTF-8">
+  <title>Admin / Tilaukset</title>
 
-<style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #f3f3f3;
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: #f5f5f5;
+      color: #111;
     }
 
     h1 {
-        background: black;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        margin: 0;
+      margin: 0;
+      padding: 25px;
+      text-align: center;
+      font-size: 30px;
+      background: black;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
-    table {
-        width: 90%;
-        margin: 30px auto;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .orders-container {
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
     }
 
-    th {
-        background: #6d6a42;
-        color: white;
-        padding: 12px;
+    .order-card {
+      background: white;
+      border: 2px solid black;
+      border-radius: 14px;
+      padding: 18px 22px;
+      position: relative;
     }
 
-    td {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        vertical-align: top;
+    .order-status {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 2px solid;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
     }
 
-    tr:hover {
-        background: #f0f0f0;
+    .order-status.pending {
+      border-color: red;
+      color: red;
+      background: #ffe5e5;
     }
 
-    button {
-        padding: 6px 12px;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 14px;
+    .order-status.delivered {
+      border-color: green;
+      color: green;
+      background: #e9ffe9;
     }
 
-    .edit-btn {
-        background: #3498db;
-        color: white;
-        margin-right: 5px;
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .order-products {
+      background: #fafafa;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      list-style: none;
+    }
+
+    .order-products li {
+      padding: 8px 0;
+      border-bottom: 1px dashed #ccc;
+    }
+
+    .order-products li:last-child {
+      border-bottom: none;
+    }
+
+    .order-footer {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      transition: 0.2s;
+    }
+
+    .complete-btn {
+      background: black;
+      color: white;
+    }
+
+    .complete-btn:hover {
+      background: #333;
     }
 
     .delete-btn {
-        background: #e74c3c;
-        color: white;
+      background: red;
+      color: white;
     }
 
-    /* MODAL */
-    .modal {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.65);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 100;
+    .delete-btn:hover {
+      background: #bb0000;
     }
 
-    .modal.hidden {
-        display: none;
-    }
-
-    .modal-content {
-        background: white;
-        width: 450px;
-        padding: 20px;
-        border-radius: 10px;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
-    .modal-content h2 {
-        margin-top: 0;
-    }
-
-    .modal-content input,
-    .modal-content select {
-        width: 100%;
-        padding: 7px;
-        margin-bottom: 10px;
-        border-radius: 6px;
-        border: 1px solid #aaa;
-    }
-
-    .edit-item {
-        display: flex;
-        justify-content: space-between;
-        background: #eee;
-        padding: 8px;
-        margin-bottom: 6px;
-        border-radius: 5px;
-    }
-
-    .close-btn {
-        background: #777;
-        color: white;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .save-btn {
-        background: #27ae60;
-        color: white;
-        width: 100%;
-        margin-top: 10px;
-    }
-</style>
+  </style>
 </head>
 
 <body>
 
 <h1>Admin / Tilaukset</h1>
 
-<table id="orders-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Asiakas</th>
-            <th>Puhelin</th>
-            <th>Tuotteet</th>
-            <th>Hinta</th>
-            <th>Status</th>
-            <th>Toiminnot</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<!-- ===========================
-      TILAUKSEN MUOKKAUSMODAALI
-=========================== -->
-<div id="edit-modal" class="modal hidden">
-    <div class="modal-content">
-        <h2>Muokkaa tilausta #<span id="edit-order-id"></span></h2>
-
-        <label>Asiakas</label>
-        <input id="edit-customer" type="text">
-
-        <label>Puhelin</label>
-        <input id="edit-phone" type="text">
-
-        <label>Tila</label>
-        <select id="edit-status">
-            <option value="pending">Pending</option>
-            <option value="in_progress">In progress</option>
-            <option value="delivered">Delivered</option>
-        </select>
-
-        <h3>Tuotteet</h3>
-        <div id="edit-items"></div>
-
-        <h3>Yhteensä: €<span id="edit-total"></span></h3>
-
-        <button id="save-order-btn" class="save-btn">Tallenna</button>
-        <button onclick="closeEditor()" class="close-btn">Sulje</button>
-    </div>
-</div>
+<div id="orders-container" class="orders-container"></div>
 
 <script src="admin.js"></script>
+
 </body>
 </html>

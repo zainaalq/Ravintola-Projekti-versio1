@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin / Käyttäjät</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+    }
+
+    h1 {
+      background: black;
+      color: white;
+      padding: 25px;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    .users-container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid black;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 18px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: black;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f0f0f0;
+    }
+
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: darkred;
+    }
+
+    .back-btn {
+      background: black;
+      color: white;
+      padding: 12px 20px;
+      width: 200px;
+      margin: 25px auto;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+
+  <script src="admin-users.js" defer></script>
+</head>
+
+<body>
+
+<h1>Käyttäjät</h1>
+
+<div class="users-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nimi</th>
+        <th>Puhelin</th>
+        <th>Ensimmäinen tilaus</th>
+        <th>Poista</th>
+      </tr>
+    </thead>
+    <tbody id="user-table-body"></tbody>
+  </table>
+</div>
+
+<div class="back-btn" onclick="location.href='admin.html'">← Takaisin</div>
+
+</body>
+</html>

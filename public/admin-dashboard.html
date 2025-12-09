@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Hallintasivu</title>
+  <link rel="stylesheet" href="admin.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    .header-box {
+      background: #000000;
+      color: white;
+      padding: 30px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .panel-grid {
+      max-width: 900px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .panel-btn {
+      background: white;
+      border: 2px solid #000000;
+      border-radius: 10px;
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 22px;
+      cursor: pointer;
+      transition: 0.25s;
+      font-weight: bold;
+    }
+
+    .panel-btn:hover {
+      background: rgb(167, 166, 165);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .logout-btn {
+      background: black;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      margin: 40px auto;
+      display: block;
+      width: 200px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .logout-btn:hover {
+      background: rgb(167, 166, 165);
+    }
+  </style>
+
+  <script>
+    function checkAdmin() {
+      const token = localStorage.getItem("adminToken");
+      if (!token) window.location.href = "admin-login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("adminToken");
+      window.location.href = "admin-login.html";
+    }
+  </script>
+</head>
+
+<body onload="checkAdmin()">
+
+  <div class="header-box">HALLINTASIVU</div>
+
+  <div class="panel-grid">
+    <div class="panel-btn" onclick="location.href='admin.html'">
+     Tilaukset
+    </div>
+
+
+    <div class="panel-btn" onclick="location.href='pizza-admin.html'">
+      Pizza Menu (CRUD)
+    </div>
+
+    <div class="panel-btn" onclick="location.href='admin-drinks.html'">
+      Juomat 
+    </div>
+
+    <div class="panel-btn" onclick="location.href='admin-users.html'">
+      Käyttäjät 
+    </div>
+  </div>
+
+  <button class="logout-btn" onclick="logout()">Kirjaudu ulos</button>
+
+</body>
+</html>

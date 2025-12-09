@@ -31,7 +31,7 @@ INSERT INTO drinks (name, image) VALUES
 ('Fanta Orange',   'fanta.png'),
 ('Sprite',         'sprite.png'),
 ('Red Bull',       'red_bull.png'),
-('Apple Juice',    'apple_j..png'),
+('Apple Juice',    'apple_j.png'),
 ('Orange Juice',   'orange_juice.png'),
 ('Smoothie',       'smoothie.png');
 
