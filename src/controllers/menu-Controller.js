@@ -6,31 +6,64 @@ import {
   deletePizza
 } from "../models/MenuItem.models.js";
 
-// HAE KAIKKI PIZZAT (ilman täytemuokkauksia)
+
+function getPizzaImagePath(filename) {
+  if (!filename) return null;
+
+  const isOld = !filename.includes("-");
+
+  if (isOld) {
+    return `/kuvat/${filename}`;
+  }
+
+  return `/uploads/${filename}`;
+}
+
+
 const getAllPizzas = async (req, res) => {
-  const pizzas = await listPizzasWithToppings();
+  try {
+    const pizzas = await listPizzasWithToppings();
 
-  if (pizzas.error) {
-    return res.status(500).json({ error: pizzas.error });
+    if (pizzas.error) {
+      return res.status(500).json({ error: pizzas.error });
+    }
+
+
+    const fixed = pizzas.map(p => ({
+      ...p,
+      base_price: Number(p.base_price),
+      image: getPizzaImagePath(p.image)
+    }));
+
+    res.json(fixed);
+  } catch (err) {
+    console.error("GET ALL PIZZAS ERROR:", err);
+    res.status(500).json({ error: "Server error" });
   }
-
-  res.json(pizzas);
 };
 
-// HAE YKSI PIZZA (täysi Kotipizza-dataformaatti)
 const getPizzaDetails = async (req, res) => {
-  const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-  const pizza = await getPizzaFullConfig(id);
+    const pizza = await getPizzaFullConfig(id);
 
-  if (!pizza) {
-    return res.status(404).json({ error: "Pizza not found" });
+    if (!pizza) {
+      return res.status(404).json({ error: "Pizza not found" });
+    }
+
+    
+    pizza.image = getPizzaImagePath(pizza.image);
+    pizza.base_price = Number(pizza.base_price);
+
+    res.json(pizza);
+  } catch (err) {
+    console.error("GET PIZZA DETAILS ERROR:", err);
+    res.status(500).json({ error: "Server error" });
   }
-
-  res.json(pizza);
 };
 
-// UUSI PIZZA
+
 const createPizza = async (req, res) => {
   const { name, description, base_price, image } = req.body;
 
@@ -50,7 +83,7 @@ const createPizza = async (req, res) => {
   });
 };
 
-// PÄIVITÄ PIZZA
+
 const editPizza = async (req, res) => {
   const id = req.params.id;
   const { name, description, base_price, image } = req.body;
@@ -73,7 +106,7 @@ const editPizza = async (req, res) => {
   res.json({ message: "Pizza updated successfully" });
 };
 
-// POISTA
+
 const removePizza = async (req, res) => {
   const id = req.params.id;
 

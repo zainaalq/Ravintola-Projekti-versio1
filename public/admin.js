@@ -1,86 +1,122 @@
-// ===============================
-// LATAA JUOMAT BACKENDISTA
-// ===============================
-async function loadDrinks() {
-  try {
-    const res = await fetch("/api/drinks");
-    const drinks = await res.json();
+async function loadOrders() {
+    const res = await fetch("/api/admin/orders", {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("adminToken")
+        }
+    });
 
-    const container = document.getElementById("drinks-container");
+    const orders = await res.json();
+    const container = document.getElementById("orders-container");
     container.innerHTML = "";
 
-    drinks.forEach((drink) => {
-      const card = document.createElement("div");
-      card.classList.add("drink-card");
+    orders.forEach(order => {
+        const card = document.createElement("div");
+        card.classList.add("order-card");
+        card.setAttribute("data-order", order.id);
 
-      // Luo radio-napit
-      let sizeOptionsHTML = "";
-      let firstPrice = drink.sizes[0]?.price ?? 0;
+        let productsHTML = order.items.map(item => {
+            return `
+                <li>
+                    <div class="item-main">
+                        <div>
+                            <span class="item-name">${item.item_name}</span>
+                            <span class="item-qty">x${item.quantity}</span>
+                        </div>
+                        <span class="item-price">€${item.price}</span>
+                    </div>
+                    ${renderPrettyConfig(item.config)}
+                </li>
+            `;
+        }).join("");
 
-      drink.sizes.forEach((s, index) => {
-        sizeOptionsHTML += `
-          <label>
-            <input type="radio" 
-              name="drink-${drink.id}" 
-              data-size="${s.size}"
-              data-price="${s.price}"
-              ${index === 0 ? "checked" : ""}>
-            ${s.size} (€${Number(s.price).toFixed(2)})
-          </label>
+        const deliveredClass = order.status === "delivered" ? "delivered" : "pending";
+
+        card.innerHTML = `
+            <div class="order-header">
+                <div>
+                    <h3>Tilaus #${order.id} — ${order.customer_name}</h3>
+                    <div class="order-meta">Puhelin: ${order.phone}</div>
+                </div>
+
+                <div class="order-status ${deliveredClass}">
+                    ${order.status.toUpperCase()}
+                </div>
+            </div>
+
+            <ul class="order-products">
+                ${productsHTML}
+            </ul>
+
+            <div class="order-footer">
+                <div class="order-total">Yhteensä: <span>€${order.total_price}</span></div>
+
+                <div class="order-actions">
+                    <button class="btn complete-btn" onclick="markDelivered(${order.id})">
+                        Merkitse valmiiksi
+                    </button>
+                    <button class="btn delete-btn" onclick="deleteOrder(${order.id})">Poista</button>
+                </div>
+            </div>
         `;
-      });
 
-      // 🔥 TÄRKEÄ KORJAUS: oikea kuva-polku
-      // Vanha: kuvat/juomat/${drink.image}
-      // Uusi: /kuvat/${drink.image}
-      const imageUrl = `/kuvat/${drink.image}`;
-
-      // Luo kortin sisältö
-      card.innerHTML = `
-        <img src="${imageUrl}" class="drink-img" alt="${drink.name}">
-
-        <div class="drink-info">
-          <h3 class="drink-name">${drink.name}</h3>
-
-          <div class="size-options">${sizeOptionsHTML}</div>
-
-          <div class="price-row">
-            <p class="drink-price selected-price">€${Number(firstPrice).toFixed(2)}</p>
-
-            <!-- Nappi lisää ostoskoriin — ostoskori.js hoitaa -->
-            <button class="add-btn">+</button>
-          </div>
-        </div>
-      `;
-
-      container.appendChild(card);
+        container.appendChild(card);
     });
-
-    enableDynamicPriceUpdates();
-
-  } catch (err) {
-    console.error("Juomien latausvirhe:", err);
-  }
 }
 
+function renderPrettyConfig(config) {
+    if (!config) return "";
 
-// ===============================
-// DYNAAMINEN HINNAN PÄIVITYS
-// ===============================
-function enableDynamicPriceUpdates() {
-  document.querySelectorAll(".size-options input").forEach(radio => {
-    radio.addEventListener("change", () => {
-      const card = radio.closest(".drink-card");
-      const priceLabel = card.querySelector(".selected-price");
+    try {
+        const data = JSON.parse(config);
+        let out = [];
 
-      priceLabel.textContent =
-        "€" + Number(radio.dataset.price).toFixed(2);
-    });
-  });
+        if (data.base) out.push(`<strong>Pohja:</strong> ${data.base.name}`);
+        if (data.sauce) out.push(`<strong>Kastike:</strong> ${data.sauce.name}`);
+
+        if (data.cheese?.length) {
+            out.push(`<strong>Juusto:</strong> ` +
+                data.cheese.map(c => `${c.name} x${c.qty}`).join(", "));
+        }
+
+        if (data.toppings?.length) {
+            out.push(`<strong>Täytteet:</strong> ` +
+                data.toppings.map(t => `${t.name} x${t.qty}`).join(", "));
+        }
+
+        return `<div class="item-config">${out.join("<br>")}</div>`;
+    } catch {
+        return "";
+    }
 }
 
+async function markDelivered(id) {
+    const card = document.querySelector(`[data-order="${id}"]`);
+    if (card) {
+        card.style.transition = "0.4s";
+        card.style.background = "#e3ffea";
+    }
 
-// ===============================
-// LATAA JUOMAT SIVUN AVAUKSESSA
-// ===============================
-document.addEventListener("DOMContentLoaded", loadDrinks);
+    await fetch(`/api/admin/orders/${id}`, {
+        method: "PUT",
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("adminToken")
+        },
+        body: JSON.stringify({ status: "delivered" })
+    });
+
+    setTimeout(() => loadOrders(), 400);
+}
+
+async function deleteOrder(id) {
+    if (!confirm("Poistetaanko tilaus?")) return;
+
+    await fetch(`/api/admin/orders/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: "Bearer " + localStorage.getItem("adminToken") }
+    });
+
+    loadOrders();
+}
+
+loadOrders();

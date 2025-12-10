@@ -1,4 +1,3 @@
-// src/routers/favorites-Routes.js
 import express from "express";
 import {
   getUserFavorites,

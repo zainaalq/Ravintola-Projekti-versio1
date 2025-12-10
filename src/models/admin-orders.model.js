@@ -2,9 +2,7 @@ import promisePool from "../utils/database.js";
 
 export const AdminOrdersModel = {
 
-  // ==============================
-  //  HAE KAIKKI TILAUKSET + CONFIG
-  // ==============================
+
   async getAllOrders() {
     const sql = `
       SELECT 
@@ -39,9 +37,7 @@ export const AdminOrdersModel = {
   },
 
 
-  // ====================================
-  //  HAE YKSI TILAUS (MUKAAN CONFIG)
-  // ====================================
+
   async getOrderById(id) {
     const [[orderRows], [itemRows]] = await Promise.all([
       promisePool.query("SELECT * FROM orders WHERE id=?", [id]),
@@ -60,12 +56,9 @@ export const AdminOrdersModel = {
   },
 
 
-  // ====================================
-  //  PÄIVITÄ TILAUS + CONFIG TUOTTEILLE
-  // ====================================
+
   async updateOrder(id, data) {
 
-    // päivitä order-taulu
     await promisePool.query(
       `
       UPDATE orders
@@ -75,10 +68,8 @@ export const AdminOrdersModel = {
       [data.customer_name, data.phone, data.status, data.total_price, id]
     );
 
-    // poista vanhat tuotteet
     await promisePool.query("DELETE FROM order_items WHERE order_id=?", [id]);
 
-    // lisää uudet tuotteet
     for (const item of data.items) {
       await promisePool.query(
         `
@@ -93,9 +84,7 @@ export const AdminOrdersModel = {
   },
 
 
-  // ============================
-  //  POISTA TILAUS
-  // ============================
+
   async deleteOrder(id) {
     await promisePool.query("DELETE FROM order_items WHERE order_id=?", [id]);
     await promisePool.query("DELETE FROM orders WHERE id=?", [id]);

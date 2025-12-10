@@ -1,6 +1,4 @@
-// =======================
-// ❤️ SUOSIKIT
-// =======================
+
 
 async function updateFavCounter() {
   const res = await fetch("/api/favorites");
@@ -63,9 +61,9 @@ async function toggleFavorite(id) {
   updateFavCounter();
 }
 
-// =======================
-// 🍕 LATAA PIZZAT
-// =======================
+
+
+
 
 async function loadPizzas() {
   try {
@@ -84,7 +82,8 @@ async function loadPizzas() {
           <i id="fav-${pizza.id}" class="fa-regular fa-heart fav-heart"></i>
         </div>
 
-        <img src="kuvat/${pizza.image}" 
+        <!-- 🔥 TÄRKEÄ MUUTOS: ei 'kuvat/', koska backend antaa jo oikean polun -->
+        <img src="${pizza.image}" 
              class="pizza-img"
              data-id="${pizza.id}"  
              alt="${pizza.name}">
@@ -116,9 +115,10 @@ async function loadPizzas() {
 
 document.addEventListener("DOMContentLoaded", loadPizzas);
 
-// =======================
-// ⭐ SUOSIKKI PANEL
-// =======================
+
+
+
+
 
 document.querySelector(".fav-btn").addEventListener("click", (e) => {
   e.preventDefault();
@@ -148,7 +148,7 @@ async function openFavorites() {
     li.classList.add("fav-item");
 
     li.innerHTML = `
-      <img src="kuvat/${pizza.image}">
+      <img src="${pizza.image}">
       <div>
         <p><strong>${pizza.name}</strong></p>
         <p>€${Number(pizza.base_price).toFixed(2)}</p>
@@ -183,9 +183,9 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-// =======================
-// 🍕 MODAALI: PIZZA CUSTOMIZER
-// =======================
+
+
+
 
 const pizzaModal = document.getElementById("pizza-modal");
 const closePizzaModal = document.getElementById("close-pizza-modal");
@@ -193,7 +193,8 @@ const closePizzaModal = document.getElementById("close-pizza-modal");
 let currentPizza = null;
 let pizzaOptions = null;
 
-// Avaa modal
+
+
 document.addEventListener("click", async (e) => {
   if (e.target.classList.contains("pizza-img") || e.target.classList.contains("customize-btn")) {
 
@@ -206,6 +207,7 @@ document.addEventListener("click", async (e) => {
     openPizzaModal();
   }
 });
+
 
 function setupCurrentPizza(data) {
   pizzaOptions = data.options;
@@ -226,8 +228,10 @@ function setupCurrentPizza(data) {
   };
 }
 
+
 function openPizzaModal() {
-  document.getElementById("modal-pizza-img").src = "kuvat/" + currentPizza.image;
+  document.getElementById("modal-pizza-img").src = currentPizza.image;
+
   document.getElementById("modal-pizza-name").textContent = currentPizza.name;
   document.getElementById("modal-pizza-desc").textContent = currentPizza.description;
 
@@ -242,9 +246,10 @@ function openPizzaModal() {
 
 closePizzaModal.addEventListener("click", () => pizzaModal.classList.add("hidden"));
 
-// ------------------
-// ⭐ Pohjat
-// ------------------
+
+
+
+
 function renderBases() {
   const list = document.getElementById("modal-base");
   list.innerHTML = "";
@@ -268,9 +273,10 @@ function renderBases() {
   });
 }
 
-// ------------------
-// ⭐ Kastike
-// ------------------
+
+
+
+
 function renderSauces() {
   const list = document.getElementById("modal-sauce");
   list.innerHTML = "";
@@ -294,9 +300,10 @@ function renderSauces() {
   });
 }
 
-// ------------------
-// ⭐ Juusto
-// ------------------
+
+
+
+
 function renderCheese() {
   const list = document.getElementById("modal-cheese");
   list.innerHTML = "";
@@ -315,9 +322,10 @@ function renderCheese() {
   });
 }
 
-// ------------------
-// ⭐ Täytteet
-// ------------------
+
+
+
+
 function renderToppings() {
   const list = document.getElementById("modal-toppings");
   list.innerHTML = "";
@@ -337,6 +345,8 @@ function renderToppings() {
   });
 }
 
+
+
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("plus-t") &&
       !e.target.classList.contains("minus-t")) return;
@@ -355,9 +365,10 @@ document.addEventListener("click", (e) => {
   updatePrice();
 });
 
-// ------------------
-// ⭐ Hinta
-// ------------------
+
+
+
+
 function updatePrice() {
   let total = currentPizza.base_price;
   total += currentPizza.cheese.reduce((s, t) => s + t.qty * t.price, 0);
@@ -365,15 +376,19 @@ function updatePrice() {
   document.getElementById("modal-price").textContent = total.toFixed(2);
 }
 
-// ------------------
-// ⭐ Lisää ostoskoriin
-// ------------------
+
+
+
+
 document.getElementById("modal-add-to-cart").addEventListener("click", () => {
   const item = {
     id: "custom-" + currentPizza.id + "-" + Math.random(),
     type: "pizza",
     name: currentPizza.name,
-    img: "kuvat/" + currentPizza.image,
+
+    
+    img: currentPizza.image,
+
     quantity: 1,
     price: Number(document.getElementById("modal-price").textContent),
 
@@ -388,9 +403,9 @@ document.getElementById("modal-add-to-cart").addEventListener("click", () => {
   pizzaModal.classList.add("hidden");
 });
 
-// =======================
-// 📱 MOBILE MENU
-// =======================
+
+
+
 
 const mobileMenu = document.getElementById("mobile-menu");
 const overlay = document.getElementById("menu-overlay");

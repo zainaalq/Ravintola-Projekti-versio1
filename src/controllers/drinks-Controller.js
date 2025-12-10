@@ -1,9 +1,5 @@
 import db from "../utils/database.js";
 
-/* ============================================================================
-   GET ALL DRINKS (Frontend)
-   Palauttaa oikean kuvan polun riippuen siitä onko kuva vanha vai uusi
-============================================================================ */
 export const getAllDrinks = async (req, res) => {
   const [rows] = await db.query(`
     SELECT d.id, d.name, d.image,
@@ -22,11 +18,9 @@ export const getAllDrinks = async (req, res) => {
   const drinks = rows.map((d) => {
     let imagePath;
 
-    // 🔥 Jos tiedostonimi alkaa numerolla tai sisältää "-" → multerin uusi kuva
     if (d.image && (d.image[0].match(/[0-9]/) || d.image.includes("-"))) {
       imagePath = `/uploads/${d.image}`;
     } else {
-      // 🔥 Vanha kuva, joka on public/kuvat/juomat/ kansiossa
       imagePath = `/kuvat/juomat/${d.image}`;
     }
 
@@ -41,10 +35,6 @@ export const getAllDrinks = async (req, res) => {
   res.json(drinks);
 };
 
-
-/* ============================================================================
-   GET ONE DRINK
-============================================================================ */
 export const getDrinkDetails = async (req, res) => {
   const id = req.params.id;
 
@@ -58,7 +48,6 @@ export const getDrinkDetails = async (req, res) => {
 
   const drink = rows[0];
 
-  // Sama polkulogiikka kuin ylhäällä
   if (drink.image && (drink.image[0].match(/[0-9]/) || drink.image.includes("-"))) {
     drink.image = `/uploads/${drink.image}`;
   } else {
@@ -68,10 +57,6 @@ export const getDrinkDetails = async (req, res) => {
   res.json(drink);
 };
 
-
-/* ============================================================================
-   CREATE NEW DRINK (Admin)
-============================================================================ */
 export const createDrink = async (req, res) => {
   const { name, small_price, large_price } = req.body;
   const image = req.file ? req.file.filename : null;
@@ -79,7 +64,6 @@ export const createDrink = async (req, res) => {
   if (!name)
     return res.status(400).json({ error: "Name is required" });
 
-  // INSERT drink
   const [result] = await db.execute(
     "INSERT INTO drinks (name, image) VALUES (?, ?)",
     [name, image]
@@ -87,7 +71,6 @@ export const createDrink = async (req, res) => {
 
   const drinkId = result.insertId;
 
-  // INSERT sizes
   await db.execute(
     "INSERT INTO drink_sizes (drink_id, size, price) VALUES (?, 'Small', ?)",
     [drinkId, small_price]
@@ -101,10 +84,6 @@ export const createDrink = async (req, res) => {
   res.json({ success: true, id: drinkId });
 };
 
-
-/* ============================================================================
-   UPDATE DRINK (Admin)
-============================================================================ */
 export const editDrink = async (req, res) => {
   const id = req.params.id;
   const { name, small_price, large_price, old_image } = req.body;
@@ -129,10 +108,6 @@ export const editDrink = async (req, res) => {
   res.json({ success: true });
 };
 
-
-/* ============================================================================
-   DELETE DRINK
-============================================================================ */
 export const removeDrink = async (req, res) => {
   const id = req.params.id;
 

@@ -1,13 +1,9 @@
 "use strict";
 
-/* ============================================
-   LATAA OSTOSKORI LOCALSTORAGesta
-============================================ */
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* ============================================
-   ELEMENTTIVALINNAT
-============================================ */
+
 const cartBtn = document.getElementById("cart-btn");
 const cartPanel = document.getElementById("cart-panel");
 const closeCart = document.getElementById("close-cart");
@@ -20,16 +16,12 @@ if (cartCount) {
   cartCount.style.display = cart.length > 0 ? "inline-flex" : "none";
 }
 
-/* ============================================
-   TALOLETAA OSTOSKORI LOCALSTORAGEEN
-============================================ */
+
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-/* ============================================
-   LISÄÄ TUOTE OSTOSKORIIN
-============================================ */
+
 function addItemToCart(item) {
   const existing = cart.find((p) => p.id === item.id);
 
@@ -44,15 +36,13 @@ function addItemToCart(item) {
   saveCart();
 }
 
-/* ============================================
-   LISÄÄ PIZZA KORTISTA (NOPEA LISÄYS)
-============================================ */
+
 document.addEventListener("click", (e) => {
   const button = e.target.closest(".add-btn");
   if (!button) return;
 
   const card = button.closest(".pizza-card");
-  if (!card) return; // ei pizza, ohitetaan
+  if (!card) return; 
 
   const name = card.querySelector(".pizza-name").textContent;
   const price = parseFloat(card.querySelector(".pizza-price").textContent.replace("€", ""));
@@ -74,9 +64,7 @@ document.addEventListener("click", (e) => {
   });
 });
 
-/* ============================================
-   LISÄÄ JUOMA KORTISTA (KOKO TALLENTUU)
-============================================ */
+
 document.addEventListener("click", (e) => {
   const button = e.target.closest(".add-btn");
   if (!button) return;
@@ -104,16 +92,12 @@ document.addEventListener("click", (e) => {
   });
 });
 
-/* ============================================
-   CUSTOM PIZZA (MODAALISTA)
-============================================ */
+
 window.addCustomPizzaToCart = function (pizzaItem) {
   addItemToCart(pizzaItem);
 };
 
-/* ============================================
-   PÄIVITÄ OSTOSKORI-UI
-============================================ */
+
 function updateCartUI() {
   cartItemsList.innerHTML = "";
 
@@ -161,14 +145,12 @@ function updateCartUI() {
       </div>
     `;
 
-    // + nappi
     li.querySelector(".plus").addEventListener("click", () => {
       item.quantity++;
       updateCartUI();
       saveCart();
     });
 
-    // - nappi
     li.querySelector(".minus").addEventListener("click", () => {
       item.quantity--;
       if (item.quantity <= 0) {
@@ -191,9 +173,7 @@ function updateCartUI() {
   saveCart();
 }
 
-/* ============================================
-   AVAA / SULJE OSTOSKORI
-============================================ */
+
 if (cartBtn) {
   cartBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -207,9 +187,7 @@ if (closeCart) {
   });
 }
 
-/* ============================================
-   TYHJENNÄ OSTOSKORI
-============================================ */
+
 if (clearCartBtn) {
   clearCartBtn.addEventListener("click", () => {
     cart = [];
@@ -217,9 +195,7 @@ if (clearCartBtn) {
     updateCartUI();
   });
 }
-// =======================
-// CHECKOUT → siirry toiselle sivulle
-// =======================
+
 document.addEventListener("click", (e) => {
   if (e.target.closest(".checkout-btn")) {
     if (cart.length === 0) {
@@ -227,10 +203,8 @@ document.addEventListener("click", (e) => {
       return;
     }
 
-    // Tallenna ostoskori mukaan checkout-sivulle
     saveCart();
 
-    // Siirry checkout-sivulle
     window.location.href = "checkout.html";
   }
 });

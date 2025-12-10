@@ -1,6 +1,6 @@
 import express from "express";
-import { requireAdmin } from "../middleware/authAdmin.js";
-import { uploadImage } from "../middleware/uploadImage.js";
+import { upload } from "../middleware/uploadImage.js";
+
 import {
   getAllPizzasAdmin,
   createPizza,
@@ -11,8 +11,8 @@ import {
 const router = express.Router();
 
 router.get("/", getAllPizzasAdmin);
-router.post("/", uploadImage.single("image"), createPizza);
-router.put("/:id", uploadImage.single("image"), updatePizza);
+router.post("/", upload.single("image"), createPizza);
+router.put("/:id", upload.single("image"), updatePizza);
 router.delete("/:id", deletePizza);
 
 export default router;

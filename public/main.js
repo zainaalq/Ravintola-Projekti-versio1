@@ -1,69 +1,105 @@
-// ...existing code...
-// Lataa sivu sisällöllä (yrittää useita polkuja ja suorittaa scriptit)
-function loadPage(page) {
-    const paths = [
-        `pages/${page}.html`,
-        `${page}.html`,
-        `public/${page}.html`
-    ];
 
-    (async () => {
-        let data = null;
-        for (const p of paths) {
-            try {
-                const resp = await fetch(p);
-                if (!resp.ok) continue;
-                data = await resp.text();
-                break;
-            } catch (err) {
-                // jatka seuraavaan polkuun
-            }
-        }
+async function loadDailyDeal() {
+  try {
+    const res = await fetch("/api/dailydeal");
+    const deal = await res.json();
 
-        if (data === null) {
-            document.getElementById("page-content").innerHTML = `<p>Sivua ei löytynyt: ${page}</p>`;
-            return;
-        }
+    if (!deal || !deal.pizza || !deal.drink) {
+      console.warn("Daily deal missing or invalid");
+      return;
+    }
 
-        const container = document.getElementById("page-content");
-        container.innerHTML = data;
+    const box = document.getElementById("daily-deal-box");
+    const content = document.getElementById("deal-content");
 
-        // Suorita ladatut <script> tagit (ulkoinen ja inline)
-        container.querySelectorAll('script').forEach(oldScript => {
-            const newScript = document.createElement('script');
-            if (oldScript.src) {
-                newScript.src = oldScript.src;
-                newScript.async = false;
-            } else {
-                newScript.textContent = oldScript.textContent;
-            }
-            document.body.appendChild(newScript);
-            // poista vanha skripti tai jätä — ei ole välttämätöntä
-            oldScript.remove();
-        });
-    })();
+    function fixImagePath(path) {
+      if (!path) return "";
+      if (path.startsWith("http")) return path;
+      if (path.startsWith("/")) return path;
+
+      if (!path.includes("kuvat/")) return "/uploads/" + path;
+
+      return "/" + path;
+    }
+
+    const pizzaImg = fixImagePath(deal.pizza.image);
+    const drinkImg = fixImagePath(deal.drink.image);
+
+    const pizzaPrice = Number(deal.pizza.base_price);
+    const drinkPrice = Number(deal.drink.price);
+    const discount = Number(deal.discount);
+
+    const totalBefore = (pizzaPrice + drinkPrice).toFixed(2);
+    const totalAfter = (totalBefore * (1 - discount / 100)).toFixed(2);
+
+    const d = new Date(deal.date);
+    const dateFormatted = d.toLocaleDateString("fi-FI");
+
+    content.innerHTML = `
+      <div class="deal-header">
+        <h2>Päivän kampanja — ${dateFormatted}</h2>
+      </div>
+
+      <div class="deal-grid">
+
+        <div class="deal-item">
+          <h3>${deal.pizza.name}</h3>
+          <img src="${pizzaImg}">
+          <p>Norm: €${pizzaPrice.toFixed(2)}</p>
+        </div>
+
+        <div class="deal-item">
+          <h3>${deal.drink.name}</h3>
+          <img src="${drinkImg}">
+          <p>Hinta: €${drinkPrice.toFixed(2)}</p>
+          <p>Juoma kuuluu kampanjaan</p>
+        </div>
+
+      </div>
+
+      <div class="deal-summary">
+        <p>Yhteensä ennen alea: <b>€${totalBefore}</b></p>
+        <p>Alennus: <b>${discount}%</b></p>
+        <p class="deal-final">Yhteishinta tänään: <b>€${totalAfter}</b></p>
+      </div>
+    `;
+
+    box.classList.remove("hidden");
+
+  } catch (err) {
+    console.error("Daily deal error:", err);
+  }
 }
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
-    const menuBtn = document.getElementById("menu-btn");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const closeMenu = document.getElementById("close-mobile-menu");
-    const overlay = document.getElementById("menu-overlay");
+  loadDailyDeal();
 
+  const menuBtn = document.querySelector(".fa-bars");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const closeMenu = document.getElementById("close-mobile-menu");
+  const overlay = document.getElementById("menu-overlay");
+
+  if (menuBtn) {
     menuBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        mobileMenu.classList.add("active");
-        overlay.classList.add("active");
+      e.preventDefault();
+      mobileMenu.classList.add("active");
+      overlay.classList.add("active");
     });
+  }
 
+  if (closeMenu) {
     closeMenu.addEventListener("click", () => {
-        mobileMenu.classList.remove("active");
-        overlay.classList.remove("active");
+      mobileMenu.classList.remove("active");
+      overlay.classList.remove("active");
     });
+  }
 
+  if (overlay) {
     overlay.addEventListener("click", () => {
-        mobileMenu.classList.remove("active");
-        overlay.classList.remove("active");
+      mobileMenu.classList.remove("active");
+      overlay.classList.remove("active");
     });
+  }
 });

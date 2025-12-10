@@ -1,6 +1,4 @@
-// ================================
-// ORDERS CONTROLLER
-// ================================
+
 import {
   createOrder,
   addOrderItem,
@@ -9,9 +7,7 @@ import {
   deleteOrder
 } from "../models/orders.model.js";
 
-// -------------------------------
-// POST /api/orders → luo uusi tilaus
-// -------------------------------
+
 export const placeOrder = async (req, res) => {
   try {
     const { customer_name, phone, items } = req.body;
@@ -33,9 +29,6 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-// -------------------------------
-// GET /api/orders → ADMIN: kaikki tilaukset
-// -------------------------------
 export const adminGetOrders = async (req, res) => {
   try {
     const orders = await getAllOrders();
@@ -46,9 +39,7 @@ export const adminGetOrders = async (req, res) => {
   }
 };
 
-// -------------------------------
-// POST /api/orders/status → päivitä tilauksen tila
-// -------------------------------
+
 export const changeOrderStatus = async (req, res) => {
   try {
     const { order_id, status } = req.body;
@@ -63,9 +54,7 @@ export const changeOrderStatus = async (req, res) => {
   }
 };
 
-// -------------------------------
-// POST /api/orders/delete → poista tilaus
-// -------------------------------
+
 export const removeOrder = async (req, res) => {
   try {
     const { order_id } = req.body;

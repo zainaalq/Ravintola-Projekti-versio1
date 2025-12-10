@@ -1,7 +1,5 @@
-// src/models/favorites.model.js
 import db from "../utils/database.js";
 
-// Hae käyttäjän suosikkipizzat (palauttaa pizzaobjektit)
 export const listUserFavorites = async (userId) => {
   try {
     const [rows] = await db.query(
@@ -12,14 +10,13 @@ export const listUserFavorites = async (userId) => {
       [userId]
     );
 
-    return rows; // palautetaan koko pizza-data
+    return rows; 
   } catch (err) {
     console.error("listUserFavorites error:", err);
     return [];
   }
 };
 
-// Lisää suosikki
 export const addFavorite = async (userId, pizzaId) => {
   try {
     await db.query(
@@ -31,7 +28,7 @@ export const addFavorite = async (userId, pizzaId) => {
   }
 };
 
-// Poista suosikki
+
 export const removeFavorite = async (userId, pizzaId) => {
   try {
     await db.query(

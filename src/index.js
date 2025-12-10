@@ -9,6 +9,8 @@ import adminOrdersRouter from "./routers/admin-orders.routes.js";
 import adminUsersRouter from "./routers/admin-users.routes.js";
 import adminDrinksRoutes from "./routers/admin-drinks.routes.js";
 import adminPizzasRoutes from "./routers/admin-pizzas.routes.js";
+import dailyDealsRouter from "./routers/dailyDeals.routes.js";
+import cartRoutes from "./routers/cart.routes.js";
 
 import { requireAdmin } from "./middleware/authAdmin.js";
 import db from "./utils/database.js";
@@ -18,53 +20,39 @@ import { fileURLToPath } from "url";
 
 const app = express();
 
-// ===============================
-// Fix __dirname for ES modules
-// ===============================
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ===============================
-// CONFIG
-// ===============================
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretpizza";
 
-// ===============================
-// Middleware
-// ===============================
 app.use(express.json());
 
-// FRONTEND (public)
 app.use(express.static(path.join(__dirname, "../public")));
 
-// ===============================
-// STATIC IMAGE FOLDERS
-// ===============================
 
-// 🔥 Vanhojen juomakuvien kansio (pizza-logo, cola.png jne)
+
 app.use("/kuvat/juomat", express.static(path.join(__dirname, "../public/kuvat/juomat")));
 
-// 🔥 Uusien Admin-kuvien kansio
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
+app.use("/kuvat", express.static(path.join(__dirname, "../public/kuvat")));
 
-// ===============================
-// Routers
-// ===============================
+
+
 app.use("/api/menu", menuRoutes);
 app.use("/api/drinks", drinkRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/orders", ordersRoutes);
+app.use("/api/dailydeal", dailyDealsRouter);
+app.use("/cart", cartRoutes);
 
-// Admin routers (all protected)
+
 app.use("/api/admin/orders", requireAdmin, adminOrdersRouter);
 app.use("/api/admin/users", requireAdmin, adminUsersRouter);
 app.use("/api/admin/drinks", requireAdmin, adminDrinksRoutes);
 app.use("/api/admin/pizzas", requireAdmin, adminPizzasRoutes);
 
-// ===============================
-// ADMIN REGISTER
-// ===============================
 app.post("/api/admin/register", async (req, res) => {
     const { email, username, password } = req.body;
 
@@ -101,9 +89,6 @@ app.post("/api/admin/register", async (req, res) => {
     }
 });
 
-// ===============================
-// ADMIN LOGIN
-// ===============================
 app.post("/api/admin/login", async (req, res) => {
     const { username, password } = req.body;
 
@@ -136,9 +121,6 @@ app.post("/api/admin/login", async (req, res) => {
     }
 });
 
-// ===============================
-// ADMIN CHECK
-// ===============================
 app.get("/api/admin/check", (req, res) => {
     const auth = req.headers.authorization || "";
     if (!auth.startsWith("Bearer ")) return res.json({ ok: false });
@@ -153,9 +135,6 @@ app.get("/api/admin/check", (req, res) => {
     }
 });
 
-// ===============================
-// CUSTOMER ORDER ENDPOINT
-// ===============================
 app.post("/api/orders", async (req, res) => {
     const { customer_name, phone, items } = req.body;
 
@@ -195,10 +174,6 @@ app.post("/api/orders", async (req, res) => {
         res.status(500).json({ error: "Server error, could not place order." });
     }
 });
-
-// ===============================
-// START SERVER
-// ===============================
 app.listen(3000, () => {
     console.log("Frontend: http://localhost:3000/1.html");
 });

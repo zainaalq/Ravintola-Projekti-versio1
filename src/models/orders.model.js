@@ -1,11 +1,6 @@
-// ==========================
-//  ORDERS MODEL
-// ==========================
 import db from "../utils/database.js";
 
-// -----------------------------------------
-// 1) LUO TILAUS ORDERS-TAULUUN
-// -----------------------------------------
+
 export const createOrder = async (customer_name, phone, total_price) => {
   const [result] = await db.execute(
     `INSERT INTO orders (customer_name, phone, total_price, status)
@@ -16,9 +11,7 @@ export const createOrder = async (customer_name, phone, total_price) => {
   return result.insertId;
 };
 
-// -----------------------------------------
-// 2) LISÄÄ TUOTE ORDER_ITEMS-TAULUUN
-// -----------------------------------------
+
 export const addOrderItem = async (order_id, item) => {
   await db.execute(
     `INSERT INTO order_items 
@@ -36,9 +29,7 @@ export const addOrderItem = async (order_id, item) => {
   );
 };
 
-// -----------------------------------------
-// 3) HAE KAIKKI TILAUKSET (ADMIN)
-// -----------------------------------------
+
 export const getAllOrders = async () => {
   const [orders] = await db.execute(`SELECT * FROM orders ORDER BY id DESC`);
   const [items] = await db.execute(`SELECT * FROM order_items`);
@@ -56,9 +47,7 @@ export const getAllOrders = async () => {
   return result;
 };
 
-// -----------------------------------------
-// 4) PÄIVITÄ STATUS
-// -----------------------------------------
+
 export const updateOrderStatus = async (order_id, status) => {
   await db.execute(
     `UPDATE orders SET status = ? WHERE id = ?`,
@@ -66,9 +55,7 @@ export const updateOrderStatus = async (order_id, status) => {
   );
 };
 
-// -----------------------------------------
-// 5) POISTA TILAUS
-// -----------------------------------------
+
 export const deleteOrder = async (order_id) => {
   try {
     await db.execute(`DELETE FROM order_items WHERE order_id = ?`, [order_id]);

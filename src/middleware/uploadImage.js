@@ -5,8 +5,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Uudet kuvat tallennetaan tänne:
 const uploadFolder = path.join(__dirname, "../../public/uploads");
+console.log("UPLOADS PATH =", uploadFolder);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

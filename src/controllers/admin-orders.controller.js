@@ -1,8 +1,6 @@
 import { AdminOrdersModel } from "../models/admin-orders.model.js";
 
-/* ============================
-    HAE KAIKKI TILAUKSET
-============================ */
+
 export const getAllAdminOrders = async (req, res) => {
   try {
     const orders = await AdminOrdersModel.getAllOrders();
@@ -12,9 +10,7 @@ export const getAllAdminOrders = async (req, res) => {
   }
 };
 
-/* ============================
-    HAE YKSI TILAUS
-============================ */
+
 export const getAdminOrderById = async (req, res) => {
   try {
     const order = await AdminOrdersModel.getOrderById(req.params.id);
@@ -27,28 +23,23 @@ export const getAdminOrderById = async (req, res) => {
   }
 };
 
-/* ============================
-    PÄIVITÄ TILAUS (MERKITSE VALMIIKSI)
-============================ */
+
 export const updateAdminOrder = async (req, res) => {
   try {
     const id = req.params.id;
 
-    // Haetaan vanha tilaus — jotta emme menetä dataa
     const existing = await AdminOrdersModel.getOrderById(id);
 
     if (!existing) {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    // Frontti lähettää:
-    // { status: "delivered", keepData: true }
+    
     const { status, keepData } = req.body;
 
     let updatedOrder;
 
     if (keepData) {
-      // ⛔ EI MUOKATA tuotteita, asiakastietoja tai hintoja
       updatedOrder = {
         customer_name: existing.customer_name,
         phone: existing.phone,
@@ -57,7 +48,6 @@ export const updateAdminOrder = async (req, res) => {
         status: status || existing.status,
       };
     } else {
-      // (ei käytössä nyt, mutta säilytetään tuki)
       updatedOrder = {
         customer_name: req.body.customer_name ?? existing.customer_name,
         phone: req.body.phone ?? existing.phone,
@@ -81,9 +71,7 @@ export const updateAdminOrder = async (req, res) => {
   }
 };
 
-/* ============================
-    POISTA TILAUS
-============================ */
+
 export const deleteAdminOrder = async (req, res) => {
   try {
     await AdminOrdersModel.deleteOrder(req.params.id);
