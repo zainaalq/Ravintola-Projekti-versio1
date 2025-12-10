@@ -1,13 +1,9 @@
 "use strict";
 
-/* ============================
-   LUE OSTOSKORI LOCALSTORAGEsta
-============================ */
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* ============================
-   PÄIVITÄ YHTEENVETO
-============================ */
+
 function renderOrderSummary() {
   const summary = document.getElementById("order-summary");
   summary.innerHTML = "";
@@ -43,9 +39,7 @@ function renderOrderSummary() {
 
 renderOrderSummary();
 
-/* ============================
-   LÄHETÄ TILAUS BACKENDIIN
-============================ */
+
 document.getElementById("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -57,7 +51,7 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   const customerName = document.getElementById("customer-name").value;
   const phone = document.getElementById("phone").value;
 
-  // 🔥 LÄHETÄMME CONFIG-KENTÄN MUKAAN
+  
   const orderData = {
     customer_name: customerName,
     phone,

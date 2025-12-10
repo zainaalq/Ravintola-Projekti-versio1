@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <title>Pizzahallinta</title>
 
-  <!-- Admin CSS -->
   <link rel="stylesheet" href="1.css" />
 
-  <!-- Admin JS -->
   <script src="admin-pizzas.js" defer></script>
 
   <style>
@@ -187,7 +185,6 @@
   <tbody id="pizza-body"></tbody>
 </table>
 
-<!-- =============== MODAALI =============== -->
 <div id="modal" onclick="backgroundClose(event)">
   <div class="modal-box" onclick="event.stopPropagation()">
 
@@ -204,7 +201,7 @@
     <label>Perushinta (€)</label>
     <input id="p-price" type="number" step="0.10">
 
-    <label>Kuva (valinnainen)</label>
+    <label>Kuva </label>
     <input id="p-image" type="file" accept="image/*">
 
     <input id="old-image" type="hidden">

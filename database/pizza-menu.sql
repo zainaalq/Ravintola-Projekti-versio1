@@ -2,9 +2,7 @@ DROP DATABASE IF EXISTS pizza_project;
 CREATE DATABASE pizza_project;
 USE pizza_project;
 
------------------------------------------------------
--- PIZZAT
------------------------------------------------------
+
 
 CREATE TABLE menu_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,9 +12,7 @@ CREATE TABLE menu_items (
   image VARCHAR(255)
 );
 
------------------------------------------------------
--- TÄYTTEET (POHJA, KASTIKE, JUUSTO, TÄYTE)
------------------------------------------------------
+
 
 CREATE TABLE toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,9 +22,7 @@ CREATE TABLE toppings (
   selection_type ENUM('single','multi') NOT NULL DEFAULT 'multi'
 );
 
------------------------------------------------------
--- OLETUSTÄYTTEET PER PIZZA
------------------------------------------------------
+
 
 CREATE TABLE pizza_toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -39,9 +33,7 @@ CREATE TABLE pizza_toppings (
   FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE CASCADE
 );
 
------------------------------------------------------
--- OSTOSKORI / TILATTU PIZZA
------------------------------------------------------
+
 
 CREATE TABLE order_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,9 +44,7 @@ CREATE TABLE order_items (
   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
 );
 
------------------------------------------------------
--- TILAUKSEN TÄYTTEET (single & multi valinnat)
------------------------------------------------------
+
 
 CREATE TABLE order_item_toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -66,9 +56,7 @@ CREATE TABLE order_item_toppings (
   FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE CASCADE
 );
 
------------------------------------------------------
--- TÄYTTEIDEN LISÄYS (oikeat id:t)
------------------------------------------------------
+
 
 INSERT INTO toppings (name, price, category, selection_type) VALUES
 ('Normal crust',        0.00, 'base',   'single'),   -- id 1
@@ -95,9 +83,7 @@ INSERT INTO toppings (name, price, category, selection_type) VALUES
 ('Ham',                 1.40, 'topping','multi'),    -- id 19
 ('Grilled chicken',     1.80, 'topping','multi');    -- id 20
 
------------------------------------------------------
--- PIZZAT (VALMIIT TUOTTEET)
------------------------------------------------------
+
 
 INSERT INTO menu_items (name, description, base_price, image) VALUES
 ('Margherita',
@@ -140,9 +126,7 @@ INSERT INTO menu_items (name, description, base_price, image) VALUES
  13.90,
  'gluten_free_chicken_pesto.png');
 
------------------------------------------------------
--- OLETUSTÄYTTEET PIZZOILLE (KORJATUT JA OIKEAT)
------------------------------------------------------
+
 
 -- Margherita
 INSERT INTO pizza_toppings (pizza_id, topping_id) VALUES
@@ -167,7 +151,7 @@ INSERT INTO pizza_toppings (pizza_id, topping_id) VALUES
 (3, 19),
 (3, 16);
 
--- Mix (veggie mix)
+-- Mix 
 INSERT INTO pizza_toppings (pizza_id, topping_id) VALUES
 (4, 1),
 (4, 3),

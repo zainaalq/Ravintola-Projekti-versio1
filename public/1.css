@@ -196,11 +196,11 @@ header{
 .menu {
   background-color: var(--valkoinen);
   padding: 100px 5% 120px;
-  text-align: center;    /* otsikot keskelle */
+  text-align: center;   
 }
 
 
-/* Otsikon  */
+
 .menu{
     background-color: var(--valkoinen);
     padding: 100px 5% 120px;
@@ -211,23 +211,23 @@ header{
   margin-bottom: 60px;
   color: var(--musta-color);
   text-align: center;
-  text-transform: uppercase; /* isot kirjaimet */
+  text-transform: uppercase; 
   letter-spacing: 1px;
 }
 
-/* Otsikon ( Pizza Menu)punaiseksi */
+
 .section-title span {
   color: var(--punainen);
 }
 
 
-/* ===== GRID-RAKENNE ===== */
+
 .menu-grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 40px;
     justify-items: center; 
-    align-items: stretch; /* venytetään pystysuunnassa */
+    align-items: stretch; 
 }
 
 
@@ -237,7 +237,7 @@ header{
     background-color: var(--musta-color);
     color: var(--valkoinen);
     border-radius: 20px;
-    overflow: hidden; /* piilotetaan ylimenevä sisältö */
+    overflow: hidden; 
     box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     width: 100%; 
@@ -259,7 +259,7 @@ header{
 
 }
 .pizza-card:hover .pizza-img {
-  transform: scale(1.05);  /* pieni zoom-efekti hoverissa */
+  transform: scale(1.05);  
 }
 
 .pizza-info {
@@ -276,11 +276,11 @@ header{
 .pizza-desc {
   font-size: 0.95rem; 
   line-height: 1.6; 
-  color: #f2f2f2; /* vaalea harmaa teksti */
-  opacity: 0.9; /* hieman läpinäkyvä */
-  margin-bottom: 20px; /* väli hinnan yläpuolella */
+  color: #f2f2f2; 
+  opacity: 0.9; 
+  margin-bottom: 20px; 
 }
-/* Hinta + nappi samalle riville */
+
 .price-row {
   display: flex;
   justify-content: space-between;
@@ -288,7 +288,7 @@ header{
   margin-top: 15px;
 }
 
-/* Hinta */
+
 .pizza-price {
   background-color: var(--punainen);
   color: var(--valkoinen);
@@ -304,7 +304,7 @@ header{
   transition: 0.3s ease;
 }
 
-/* + nappi — pieni tyylikäs ympyrä */
+
 .add-btn {
   background-color: var(--valkoinen);
   color: var(--musta-color);
@@ -331,7 +331,7 @@ header{
 
 
 
-/* ============= OSTOSKORI  SISÄLLÄ=================*/
+/* ============= OSTOSKORI=================*/
 
 .cart-btn{
   position: relative;
@@ -351,17 +351,16 @@ header{
   font-size: 11px;
   font-weight: 700;
   border-radius: 50px;
-  display: none; /* Näkyy vasta, kun tuotteita lisätään */
+  display: none; 
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 0 6px rgba(255, 0, 0, 0.4); /* kevyt hehku */
+  box-shadow: 0 0 6px rgba(255, 0, 0, 0.4); 
   transition: transform 0.2s ease;
 }
 
-/* Animaatio kun arvo päivittyy */
 #cart-total.bump {
   transform: scale(4.10);
   transition: transform 0.2s ease;
@@ -370,11 +369,10 @@ header{
 .cart-count.bump {
   transform: scale(1.25);
 }
-/* ===== Ostoskori paneeli ===== */
 .cart-panel{
   position: fixed;
   top:0;
-  right: -380px;  /* piilossa */
+  right: -380px;  
   width: 350px;
   height: 100vh;
   background: #e3d4d4;
@@ -387,7 +385,7 @@ header{
 }
 
 .cart-panel.open {
-  right: 0; /* näkyy */
+  right: 0; 
 }
 .cart-header{
   display: flex;
@@ -457,7 +455,7 @@ header{
 .cart-item-info {
   display: flex;
   flex-direction: column;
-  max-width: 70%;         /* Estää tekstin levittymisen koko riville */
+  max-width: 70%;         
 }
 
 .cart-name {
@@ -471,7 +469,7 @@ header{
   margin-top: 2px;
 }
 
-/* +- napit pieniksi siisteiksi pareiksi */
+
 .quantity-controls {
   display: flex;
   gap: 8px;
@@ -512,7 +510,7 @@ header{
     align-items: start;
 }
 
-/*vasen puoli*/
+
 .footer-title {
   font-family: 'Poppins', sans-serif;
   font-size: 2rem;
@@ -537,7 +535,6 @@ header{
   
 }
 
-/*oikea puoli*/
 .footer-form h3 {
   font-family: 'Poppins', sans-serif;
   font-size: 1.5rem;
@@ -559,7 +556,7 @@ header{
 
 .feedback-form input,
 .feedback-form textarea {
-  background-color: #111; /* tumma tausta inputeille */
+  background-color: #111; 
   border: 1px solid #333;
   color: var(--valkoinen);
   padding: 12px 15px;
@@ -592,7 +589,6 @@ header{
   transform: scale(1.05);
 }
 
-/* ===== Footer bottom ===== */
 .footer-bottom {
   text-align: center;
   margin-top: 60px;
@@ -626,7 +622,7 @@ header{
     max-width: 140px; 
   }
 
-  /* Navigaatiolista piilotetaan oletuksena */
+  
   .navbar {
     position: absolute;
     top: 70px;
@@ -640,7 +636,7 @@ header{
     border-top: 1px solid rgba(255,255,255,0.1);
   }
 
-  /* Linkit listassa */
+  
   .navbar li {
     margin: 12px 0;
   }
@@ -664,7 +660,7 @@ header{
   }
 }
 
-/* Alle 768px (puhelimet) */
+
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -672,9 +668,9 @@ header{
   }
 
   .navbar {
-    position: static; /* normaali virtaus */
+    position: static; 
     width: 100%;
-    display: none; /* pysyy piilossa kunnes klikataan menu-painiketta */
+    display: none; 
   }
 
   .nav-content {
@@ -682,13 +678,13 @@ header{
   }
 }
 
-/* Aktiivinen luokka joka näyttää menun  */
+
 .navbar.active {
   display: flex !important;
 }
 
 
-/* ======= KOTIPIZZA STYLE SELECT ======= */
+
 
 .select-group {
   margin-bottom: 20px;
@@ -750,7 +746,7 @@ header{
 }
 
 /* ===============================
-   PIZZA MODAL – MODERNI TYYLI
+   PIZZA MODAL 
 ================================*/
 
 .pizza-modal {
@@ -786,9 +782,7 @@ header{
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* -----------------------------------
-   YLÄKUVAN TYYLI
------------------------------------ */
+
 
 .modal-pizza-img {
   width: 100%;
@@ -798,9 +792,6 @@ header{
   
 }
 
-/* -----------------------------------
-   TITLE & DESCRIPTION
------------------------------------ */
 
 #modal-pizza-name {
   font-size: 30px;
@@ -814,9 +805,7 @@ header{
   margin-bottom: 25px;
 }
 
-/* -----------------------------------
-   SECTION HEADERS — Pohja, Kastike, jne
------------------------------------ */
+
 
 .pizza-modal-content h3 {
   margin-top: 20px;
@@ -825,9 +814,7 @@ header{
   font-weight: 700;
 }
 
-/* -----------------------------------
-   SELECT (dropdown)
------------------------------------ */
+
 
 .pizza-modal-content select {
   width: 100%;
@@ -843,9 +830,7 @@ header{
   border-color: #ff3b3b;
 }
 
-/* -----------------------------------
-   LIST ITEMS (juusto & täytteet)
------------------------------------ */
+
 
 #modal-base li,
 #modal-sauce li,
@@ -868,9 +853,7 @@ header{
   border-color: #ff3b3b;
 }
 
-/* -----------------------------------
-   PLUS & MINUS NAPIT
------------------------------------ */
+
 
 .plus-t, .minus-t {
   border: none;
@@ -891,9 +874,7 @@ header{
   background: #d92727;
 }
 
-/* -----------------------------------
-   HINTA + LISÄÄ OSTOSKORIIN
------------------------------------ */
+
 
 .modal-footer {
   margin-top: 30px;
@@ -923,12 +904,10 @@ header{
   background: #d92727;
 }
 
-/* -----------------------------------
-   CLOSE BUTTON
------------------------------------ */
+
 .close-pizza-modal {
   position: absolute;
-  top: 18px;        /* paikka päällä */
+  top: 18px;       
   right: 18px;
 
   width: 42px;
@@ -936,8 +915,8 @@ header{
   border-radius: 50%;
   border: none;
 
-  background: #ffffff;   /* Valkoinen ympyrä */
-  color: #000000;        /* Musta X */
+  background: #ffffff;   
+  color: #000000;        
   font-size: 24px;
   font-weight: 700;
 
@@ -982,7 +961,7 @@ header{
   transform: scale(1.05);
 }
 
-/* ===== DRINK-KORTIT (täysin sama kuin pizza — vain nimet vaihdettu) ===== */
+/* ===== DRINK-KORTIT ===== */
 
 .drink-card {
   background-color: #000;
@@ -1090,7 +1069,7 @@ header{
 }
 
 
-/* ❤️ SUOSIKKI-SYDÄN PIZZAKORTISSA */
+/*  SUOSIKKI-SYDÄN PIZZAKORTISSA */
 .favorite-icon {
   position: absolute;
   top: 12px;
@@ -1113,10 +1092,10 @@ header{
 }
 
 .pizza-card {
-  position: relative;  /* tärkeä! jotta sydän voi asettua oikeaan paikkaan */
+  position: relative;  
 }
 
-/* ❤️ SUOSIKKIEN LASKURI HEADERISSA */
+/*  SUOSIKKIEN LASKURI HEADERISSA */
 .fav-btn {
   position: relative;
   display: inline-block;
@@ -1136,7 +1115,7 @@ header{
   font-weight: 700;
 
   border-radius: 50px;
-  display: none;  /* näkyy vasta kun on 1+ suosikkia */
+  display: none;  
 
   display: flex;
   align-items: center;
@@ -1151,7 +1130,7 @@ header{
 }
 
 
-/* FAVORITE POPUP */
+/* FAVORITE  */
 .fav-panel {
   position: fixed;
   top: 0;
@@ -1217,7 +1196,7 @@ header{
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: -260px;        /* Piilossa */
+  right: -260px;       
   width: 250px;
   height: 100vh;
   background: #000;
@@ -1228,7 +1207,7 @@ header{
 }
 
 .mobile-menu.active {
-  right: 0;            /* Näkyy */
+  right: 0;            
 }
 
 .mobile-menu ul {
@@ -1282,6 +1261,78 @@ header{
 .menu-overlay.active {
   display: block;
 }
+
+.daily-deal {
+  background: #f5f4f2;
+  border: 3px solid #0f0d06;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 950px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  font-family: "Poppins", sans-serif;
+}
+
+.deal-header h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 25px;
+}
+
+.deal-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.deal-item {
+  text-align: center;
+}
+
+.deal-item img {
+  width: 200px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.deal-summary {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.deal-summary .deal-final {
+  font-size: 22px;
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.daily-deal-btn {
+  display: inline-block;
+  background-color: red;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 25px;
+}
+
+.daily-deal-btn:hover {
+  background-color: #000000;
+  transform: translateY(-2px);
+}
+
+.daily-deal-btn:active {
+  transform: scale(0.97);
+}
+
 
 
 

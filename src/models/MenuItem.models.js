@@ -1,8 +1,6 @@
 import promisePool from "../utils/database.js";
 
-/* ============================
-   LIST ALL PIZZAS + BASIC DATA
-============================ */
+
 const listPizzasWithToppings = async () => {
   const sql = `
     SELECT 
@@ -51,9 +49,7 @@ const listPizzasWithToppings = async () => {
   return Object.values(pizzas);
 };
 
-/* ============================
-   FIND PIZZA (BASIC)
-============================ */
+
 const findPizzaById = async (id) => {
   const [rows] = await promisePool.execute(
     "SELECT * FROM menu_items WHERE id = ?",
@@ -62,12 +58,9 @@ const findPizzaById = async (id) => {
   return rows[0];
 };
 
-/* ============================
-   KOTIPIZZA-TYYLIN DATAFORMAATTI
-============================ */
+
 const getPizzaFullConfig = async (id) => {
   try {
-    // 1. Pizza perusdata
     const [pizzaRows] = await promisePool.execute(
       "SELECT * FROM menu_items WHERE id = ?",
       [id]
@@ -76,7 +69,6 @@ const getPizzaFullConfig = async (id) => {
     if (!pizzaRows.length) return null;
     const pizza = pizzaRows[0];
 
-    // 2. Oletustäytteet
     const [defaultRows] = await promisePool.execute(
       `
       SELECT t.id, t.name, t.price, t.category
@@ -87,12 +79,10 @@ const getPizzaFullConfig = async (id) => {
       [id]
     );
 
-    // 3. Kaikki täytteet
     const [allToppings] = await promisePool.query(
       "SELECT id, name, price, category FROM toppings ORDER BY category, name"
     );
 
-    // 4. Rakennetaan DEFAULTS
     const defaults = {
       base: defaultRows.filter(t => t.category === "base"),
       sauce: defaultRows.filter(t => t.category === "sauce"),
@@ -100,7 +90,6 @@ const getPizzaFullConfig = async (id) => {
       topping: defaultRows.filter(t => t.category === "topping")
     };
 
-    // 5. Rakennetaan OPTIONS
     const options = {
       base: allToppings.filter(t => t.category === "base"),
       sauce: allToppings.filter(t => t.category === "sauce"),
@@ -124,9 +113,7 @@ const getPizzaFullConfig = async (id) => {
   }
 };
 
-/* ============================
-   CREATE NEW PIZZA
-============================ */
+
 const addPizza = async ({ name, description, base_price, image }) => {
   const sql = `
     INSERT INTO menu_items (name, description, base_price, image)
@@ -143,9 +130,7 @@ const addPizza = async ({ name, description, base_price, image }) => {
   return { id: result.insertId };
 };
 
-/* ============================
-   UPDATE PIZZA
-============================ */
+
 const updatePizza = async (id, pizza) => {
   const { name, description, base_price, image } = pizza;
 
@@ -166,9 +151,7 @@ const updatePizza = async (id, pizza) => {
   return { affectedRows: result.affectedRows };
 };
 
-/* ============================
-   DELETE PIZZA
-============================ */
+
 const deletePizza = async (id) => {
   const [result] = await promisePool.execute(
     "DELETE FROM menu_items WHERE id = ?",
@@ -177,13 +160,11 @@ const deletePizza = async (id) => {
   return { affectedRows: result.affectedRows };
 };
 
-/* ============================
-   EXPORTS
-============================ */
+
 export {
   listPizzasWithToppings,
   findPizzaById,
-  getPizzaFullConfig, // 🔥 UUSI FORMATTI
+  getPizzaFullConfig, 
   addPizza,
   updatePizza,
   deletePizza

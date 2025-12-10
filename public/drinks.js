@@ -1,6 +1,4 @@
-// ===============================
-// LATAA JUOMAT BACKENDISTA
-// ===============================
+
 async function loadDrinks() {
   try {
     const res = await fetch("/api/drinks");
@@ -13,7 +11,6 @@ async function loadDrinks() {
       const card = document.createElement("div");
       card.classList.add("drink-card");
 
-      // Luo radio-napit
       let sizeOptionsHTML = "";
       let firstPrice = drink.sizes[0]?.price ?? 0;
 
@@ -31,7 +28,6 @@ async function loadDrinks() {
         `;
       });
 
-      // Luo kortin sisältö
       card.innerHTML = `
         <img src="${drink.image}" class="drink-img" alt="${drink.name}">
 
@@ -59,9 +55,7 @@ async function loadDrinks() {
 }
 
 
-// ===============================
-// Dynaaminen hinnan päivitys
-// ===============================
+/
 function enableDynamicPriceUpdates() {
   document.querySelectorAll(".size-options input").forEach(radio => {
     radio.addEventListener("change", () => {
@@ -74,5 +68,4 @@ function enableDynamicPriceUpdates() {
   });
 }
 
-// Lataa juomat
 document.addEventListener("DOMContentLoaded", loadDrinks);

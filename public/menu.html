@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="1.css" />
 
-  <!-- Font Awesome -->
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
@@ -17,7 +16,6 @@
 
 <body>
 
-  <!-- ===== HEADER ===== -->
   <header>
     <a href="1.html" class="logo">
       <img src="kuvat/pizza-logo.png" alt="Pizza House Logo" />
@@ -33,7 +31,6 @@
     </ul>
 
     <div class="nav-content">
-      <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
       <a href="#"><i class="fa-regular fa-user"></i></a>
 
       <a  class="fav-btn">
@@ -50,29 +47,24 @@
     </div>
   </header>
 
-  <!-- MOBILE SLIDE MENU -->
 <div id="mobile-menu" class="mobile-menu">
   <button id="close-mobile-menu" class="close-mobile-menu">✕</button>
 
   <ul>
     <li><a href="1.html">Home</a></li>
     <li><a href="menu.html">Menu</a></li>
-    <li><a href="#">Lunch</a></li>
     <li><a href="drinks.html">Drinks</a></li>
     <li><a href="1.html#contact">Contact</a></li>
   </ul>
 </div>
 
-<!-- TUMMENNUS TAUSTALLE -->
 <div id="menu-overlay" class="menu-overlay"></div>
 
 
 
-  <!-- ===== MENU TITLE ===== -->
   <h1 style="text-align:center; margin-top:120px;">🍕 Our Pizza Menu</h1>
 
 
-  <!-- ===== PIZZA MENU SECTION ===== -->
   <section class="menu" id="menu">
     <div class="menu-grid" id="menu-grid">
       <!-- JS lisää pizzat tänne -->
@@ -81,7 +73,6 @@
 
 
 
-  <!-- ===== PIZZA MODAL ===== -->
   <div id="pizza-modal" class="pizza-modal hidden">
     <div class="pizza-modal-content">
 
@@ -117,7 +108,6 @@
 
 
 
-  <!-- ===== OSTOSKORI ===== -->
   <div id="cart-panel" class="cart-panel">
     <div class="cart-header">
       <h3>Your Cart</h3>
@@ -139,7 +129,6 @@
 
 
 
-  <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="footer-bottom">
       <p>© 2025 Pizza House — All rights reserved.</p>
@@ -149,7 +138,6 @@
 
 
   
-  <!-- ===== OSTOSKORI ===== -->
   <div id="cart-panel" class="cart-panel">
     <div class="cart-header">
       <h3>Your Cart</h3>
@@ -170,7 +158,6 @@
 
 
 
-  <!--suosiki :) osuus -->
   
 <div id="fav-panel" class="fav-panel">
   <div class="fav-header">
@@ -179,14 +166,12 @@
   </div>
 
   <ul id="fav-list" class="fav-list">
-    <!-- Suosikit lisätään tänne JS:llä -->
   </ul>
 </div>
 
 
 
 <script>
-  /*kun avaa contact linki niin => vie suorra sinne  */
   window.addEventListener("load", () => {
     if (window.location.hash === "#contact") {
       const section = document.querySelector("#contact");

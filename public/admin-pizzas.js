@@ -1,149 +1,161 @@
-// ============================
-// PIZZAHALLINTA – ADMIN
-// ============================
+function requireAdmin() {
+  const token = localStorage.getItem("adminToken");
+  if (!token) {
+    window.location.href = "admin-login.html";
+  }
+  return token;
+}
 
-const tbody = document.getElementById("pizza-body");
-let editId = null;
+let editingId = null;
 
-// ============================
-// LATAA PIZZAT
-// ============================
 async function loadPizzas() {
-  const res = await fetch("/api/menu");
-  const pizzas = await res.json();
+  const token = requireAdmin();
 
+  const res = await fetch("/api/admin/pizzas", {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  if (!res.ok) {
+    console.error(await res.text());
+    alert("Pizzojen lataus epäonnistui (admin).");
+    return;
+  }
+
+  const pizzas = await res.json();
+  const tbody = document.getElementById("pizza-body");
   tbody.innerHTML = "";
 
   pizzas.forEach((p) => {
-    const row = document.createElement("tr");
+    const imgSrc = p.image || "";
 
-    // ---- OIKEA KUVA-POLKU ----
-    const imagePath = p.image ? `/kuvat/${p.image}` : "";
-
-    row.innerHTML = `
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
       <td>${p.id}</td>
       <td>${p.name}</td>
-      <td>€${Number(p.base_price).toFixed(2)}</td>
-
+      <td>€${Number(p.price).toFixed(2)}</td>
       <td>
-        ${
-          imagePath
-            ? `<img src="${imagePath}" style="width:60px; height:auto; border-radius:6px;">`
-            : "Ei kuvaa"
-        }
+        ${imgSrc ? `<img src="${imgSrc}" style="width:60px;height:60px;object-fit:cover;border-radius:6px;">` : ""}
       </td>
-
       <td>
-        <button class="btn-edit"
-          onclick="openEdit(${p.id},
-                           \`${p.name}\`,
-                           \`${p.description}\`,
-                           \`${p.base_price}\`,
-                           \`${p.image}\`)">
-          Muokkaa
-        </button>
-
-        <button class="btn-delete" onclick="deletePizza(${p.id})">
-          Poista
-        </button>
+        <button class="btn-edit">Muokkaa</button>
+        <button class="btn-delete">Poista</button>
       </td>
     `;
 
-    tbody.appendChild(row);
+    tr.querySelector(".btn-edit").addEventListener("click", () => openEditModal(p));
+    tr.querySelector(".btn-delete").addEventListener("click", () => deletePizza(p.id));
+
+    tbody.appendChild(tr);
   });
 }
 
-// ============================
-// MODAALIN AVAUS: MUOKKAUS
-// ============================
-function openEdit(id, name, desc, price, image) {
-  editId = id;
-
-  document.getElementById("modal-title").textContent = "Muokkaa pizzaa";
-
-  document.getElementById("p-name").value = name;
-  document.getElementById("p-desc").value = desc;
-  document.getElementById("p-price").value = price;
-
-  document.getElementById("old-image").value = image;
-
-  document.getElementById("modal").style.display = "flex";
-}
-
-// ============================
-// MODAALIN AVAUS: LISÄÄ PIZZA
-// ============================
 function openAddModal() {
-  editId = null;
-
-  document.getElementById("modal-title").textContent = "Lisää pizza";
+  editingId = null;
+  document.getElementById("modal-title").innerText = "Lisää pizza";
 
   document.getElementById("p-name").value = "";
   document.getElementById("p-desc").value = "";
   document.getElementById("p-price").value = "";
-
+  document.getElementById("p-image").value = "";
   document.getElementById("old-image").value = "";
 
   document.getElementById("modal").style.display = "flex";
 }
 
-// ============================
-// SULJE MODAALI
-// ============================
+function openEditModal(pizza) {
+  editingId = pizza.id;
+  document.getElementById("modal-title").innerText = "Muokkaa pizzaa";
+
+  document.getElementById("p-name").value = pizza.name;
+  document.getElementById("p-desc").value = pizza.description || "";
+  document.getElementById("p-price").value = pizza.price;
+  document.getElementById("p-image").value = "";
+  document.getElementById("old-image").value = pizza.image ? pizza.image.split("/").pop() : "";
+
+  document.getElementById("modal").style.display = "flex";
+}
+
 function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
 function backgroundClose(e) {
-  if (e.target.id === "modal") closeModal();
+  if (e.target.id === "modal") {
+    closeModal();
+  }
 }
 
-// ============================
-// TALLENNA PIZZA (UUSI TAI MUOKKAUS)
-// ============================
 async function savePizza() {
-  const name = document.getElementById("p-name").value;
-  const desc = document.getElementById("p-desc").value;
-  const price = document.getElementById("p-price").value;
+  const token = requireAdmin();
 
-  const image = document.getElementById("p-image").files[0];
+  const name = document.getElementById("p-name").value.trim();
+  const desc = document.getElementById("p-desc").value.trim();
+  const price = document.getElementById("p-price").value;
+  const imageInput = document.getElementById("p-image");
   const oldImage = document.getElementById("old-image").value;
 
-  const form = new FormData();
-  form.append("name", name);
-  form.append("description", desc);
-  form.append("base_price", price);
-  form.append("old_image", oldImage);
+  if (!name || !price) {
+    alert("Nimi ja hinta ovat pakollisia.");
+    return;
+  }
 
-  if (image) form.append("image", image);
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("description", desc);
+  formData.append("base_price", price);
 
-  const url = editId
-    ? `/api/admin/pizzas/${editId}`
-    : `/api/admin/pizzas`;
+  if (imageInput.files.length > 0) {
+    formData.append("image", imageInput.files[0]);
+  } else if (editingId && oldImage) {
+    formData.append("old_image", oldImage);
+  }
 
-  await fetch(url, {
-    method: editId ? "PUT" : "POST",
-    body: form,
+  const url = editingId
+    ? `/api/admin/pizzas/${editingId}`
+    : "/api/admin/pizzas";
+
+  const method = editingId ? "PUT" : "POST";
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      Authorization: "Bearer " + token
+    },
+    body: formData
   });
+
+  if (!res.ok) {
+    console.error(await res.text());
+    alert("Tallennus epäonnistui.");
+    return;
+  }
 
   closeModal();
   loadPizzas();
 }
 
-// ============================
-// POISTA PIZZA
-// ============================
 async function deletePizza(id) {
-  if (!confirm("Haluatko poistaa tämän pizzan?")) return;
+  const token = requireAdmin();
+  if (!confirm("Poistetaanko pizza?")) return;
 
-  await fetch(`/api/admin/pizzas/${id}`, {
+  const res = await fetch(`/api/admin/pizzas/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + token
+    }
   });
+
+  if (!res.ok) {
+    console.error(await res.text());
+    alert("Poisto epäonnistui.");
+    return;
+  }
 
   loadPizzas();
 }
 
-// ============================
-// ALUSTA
-// ============================
-document.addEventListener("DOMContentLoaded", loadPizzas);
+document.addEventListener("DOMContentLoaded", () => {
+  loadPizzas();
+});

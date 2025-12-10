@@ -1,6 +1,5 @@
 import promisePool from "../utils/database.js";
 
-/* HAE KAIKKI JUOMAT + HINNAT */
 const listDrinksWithSizes = async () => {
   try {
     const sql = `
@@ -46,7 +45,6 @@ const listDrinksWithSizes = async () => {
   }
 };
 
-/* HAE YKSI JUOMA */
 const findDrinkById = async (id) => {
   try {
     const sql = `
@@ -90,7 +88,6 @@ const findDrinkById = async (id) => {
   }
 };
 
-/* LISÄÄ UUSI JUOMA */
 const addDrink = async ({ name, image }) => {
   try {
     const sql = `
@@ -107,7 +104,6 @@ const addDrink = async ({ name, image }) => {
   }
 };
 
-/* PÄIVITÄ JUOMA */
 const updateDrink = async (id, { name, image }) => {
   try {
     const sql = `
@@ -123,7 +119,6 @@ const updateDrink = async (id, { name, image }) => {
   }
 };
 
-/* POISTA JUOMA */
 const deleteDrink = async (id) => {
   try {
     const sql = `DELETE FROM drinks WHERE id=?`;

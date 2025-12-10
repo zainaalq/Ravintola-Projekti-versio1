@@ -1,7 +1,3 @@
-// =========================
-// 🔑 Jos token on jo olemassa,
-// mene suoraan admin-dashboardiin
-// =========================
 (function autoRedirectIfLoggedIn() {
   const token = localStorage.getItem("adminToken");
   if (token) {
@@ -13,33 +9,22 @@
       .then(r => r.json())
       .then(data => {
         if (data.ok) {
-          // Token on validi → suoraan dashboardiin
           window.location.href = "admin-dashboard.html";
         } else {
-          // Token ei kelpaa → poistetaan
           localStorage.removeItem("adminToken");
         }
       })
-      .catch(() => {
-        // Jos virhe tarkistuksessa, ei tehdä mitään
-      });
+      .catch(() => {});
   }
 })();
 
-// =========================
-// 📨 Viestin näyttö
-// =========================
 function setMessage(text, isError = true) {
   const msg = document.getElementById("msg");
   if (!msg) return;
-
   msg.textContent = text || "";
   msg.style.color = isError ? "red" : "green";
 }
 
-// =========================
-// 🔐 Admin Login
-// =========================
 async function login() {
   const username = document.getElementById("log-user")?.value.trim();
   const password = document.getElementById("log-pass")?.value.trim();
@@ -63,14 +48,12 @@ async function login() {
       return;
     }
 
-    // Talleta token
     if (data.token) {
       localStorage.setItem("adminToken", data.token);
     }
 
     setMessage("Kirjautuminen onnistui!", false);
 
-    // Pieni viive ja sitten dashboardiin
     setTimeout(() => {
       window.location.href = "admin-dashboard.html";
     }, 400);
@@ -81,9 +64,6 @@ async function login() {
   }
 }
 
-// =========================
-// 🟩 Admin Rekisteröinti
-// =========================
 async function registerAdmin() {
   const email = document.getElementById("reg-email")?.value.trim();
   const username = document.getElementById("reg-user")?.value.trim();
@@ -121,8 +101,5 @@ async function registerAdmin() {
   }
 }
 
-// =========================
-// 🌍 Tee funktiot globaaleiksi
-// =========================
 window.login = login;
 window.registerAdmin = registerAdmin;

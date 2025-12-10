@@ -6,7 +6,6 @@ function requireAdmin() {
 
 async function loadCustomerOrders() {
   const token = requireAdmin();
-
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
 
@@ -27,7 +26,9 @@ async function loadCustomerOrders() {
     return;
   }
 
-  box.innerHTML = orders.map(order => `
+  box.innerHTML = orders
+    .map(
+      (order) => `
     <div class="order-card">
       <h2>Tilaus #${order.id}</h2>
       <p><strong>Päivä:</strong> ${order.created_at}</p>
@@ -36,15 +37,19 @@ async function loadCustomerOrders() {
 
       <h3>Tuotteet:</h3>
       <ul>
-        ${order.items.map(i => `
+        ${order.items
+          .map(
+            (i) => `
           <li>
             ${i.item_name} — €${i.price} x ${i.quantity}
             ${i.config ? `<div>${i.config}</div>` : ""}
-          </li>
-        `).join("")}
+          </li>`
+          )
+          .join("")}
       </ul>
-    </div>
-  `).join("");
+    </div>`
+    )
+    .join("");
 }
 
 loadCustomerOrders();
